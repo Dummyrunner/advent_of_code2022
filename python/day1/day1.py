@@ -1,10 +1,4 @@
-import ipdb
-
-
-def removeLastN(str, n):
-    str = str[: len(str) - n]
-    return str
-
+from utils import removeLastN
 
 # input_file_path = r"./day1/input_test.txt"
 input_file_path = r"./day1/input.txt"

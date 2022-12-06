@@ -1,4 +1,5 @@
 import numpy as np
+from ipdb import set_trace
 
 # A   X   1     ROCK
 # B   Y   2     PAPER
@@ -7,9 +8,9 @@ import numpy as np
 # A <<< B <<< C <<< A
 
 
-def removeLastN(str, n):
-    str = str[: len(str) - n]
-    return str
+def removeLastN(string_to_reduce, n):
+    string_to_reduce = string_to_reduce[: len(string_to_reduce) - n]
+    return string_to_reduce
 
 
 def opp_choice(letter):
@@ -23,30 +24,35 @@ def opp_choice(letter):
 
 def own_choice(letter):
     if letter == "X":
-        return opp_choice("A").transpose()
+        return np.array([[1, 0, 0]])
     elif letter == "Y":
-        return opp_choice("B").transpose()
+        return np.array([[0, 1, 0]])
     elif letter == "Z":
-        return opp_choice("C").transpose()
+        return np.array([[0, 0, 1]])
 
 
-# input_file_path = r"./day2/input_test.txt"
-input_file_path = r"./day2/input.txt"
+def score_from_choices(opponent, own):
+    choice_score_matrix = np.array([[1, 2, 3], [1, 2, 3], [1, 2, 3]])
+    win_score_matrix = np.array([[3, 6, 0], [0, 3, 6], [6, 0, 3]])
+    total_score_matrix = choice_score_matrix + win_score_matrix
+    return opp_choice(opponent).dot(total_score_matrix).dot(own_choice(own).transpose())
+
+
+def parse_letters_from_line(line):
+    return (line[0], line[2])
+
+
+input_file_path = r"./day2/input_test.txt"
+# input_file_path = r"./day2/input.txt"
 file_object = open(input_file_path, "r")
-
 lines = file_object.readlines()
 lines = [removeLastN(line, 1) for line in lines]
-print(lines)
-
-choice_score = np.array([[1, 2, 3], [1, 2, 3], [1, 2, 3]])
-win_score = np.array([[3, 6, 0], [0, 3, 6], [6, 0, 3]])
-total_score = choice_score + win_score
 
 score = 0
 for line in lines:
-    opp_input = line[0]
-    own_input = line[2]
-    score_this_round = np.dot(opp_choice(opp_input), total_score)
-    score_this_round = np.dot(score_this_round, own_choice(own_input))
+    letters_tuple = parse_letters_from_line(line)
+    opp_letter = letters_tuple[0]
+    own_letter = letters_tuple[1]
+    score_this_round = score_from_choices(opp_letter, own_letter)
     score += score_this_round
 print(score)

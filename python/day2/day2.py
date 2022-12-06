@@ -42,17 +42,40 @@ def parse_letters_from_line(line):
     return (line[0], line[2])
 
 
+def get_choice_for_opp_choice_and_outcome(opp_letter, outcome_letter):
+    # Aim: X -> lose, Y -> draw, Z -> win
+    # lose: +1, win: -1, draw: +-0
+    # outcome_as_ABC = convert_XYZ_to_ABC(outcome_letter)
+    outcome_letter_to_increment = {"X": 1, "Y": 0, "Z": -1}
+    choice_letter = (
+        ord(convert_ABC_to_XYZ(opp_letter)) + outcome_letter_to_increment[opp_letter]
+    )
+    return choice_letter
+
+
+def convert_XYZ_to_ABC(letter):
+    return chr(ord(letter) - 23)
+
+
+def convert_ABC_to_XYZ(letter):
+    return chr(ord(letter) + 23)
+
+
 input_file_path = r"./day2/input_test.txt"
 # input_file_path = r"./day2/input.txt"
 file_object = open(input_file_path, "r")
 lines = file_object.readlines()
 lines = [removeLastN(line, 1) for line in lines]
 
-score = 0
+score_A = 0
+score_B = 0
+# For Exc A
 for line in lines:
     letters_tuple = parse_letters_from_line(line)
     opp_letter = letters_tuple[0]
     own_letter = letters_tuple[1]
-    score_this_round = score_from_choices(opp_letter, own_letter)
-    score += score_this_round
-print(score)
+    score_this_round_A = score_from_choices(opp_letter, own_letter)
+    score_A += score_this_round_A
+print("EXC A: ", score_A)
+
+# For Exc B

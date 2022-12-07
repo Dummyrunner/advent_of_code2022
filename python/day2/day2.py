@@ -72,13 +72,12 @@ lines = [removeLastN(line, 1) for line in lines]
 
 score_A = 0
 score_B = 0
-# For Exc A
+
 for line in lines:
     letters_tuple = parse_letters_from_line(line)
     first_letter = letters_tuple[0]
     second_letter = letters_tuple[1]
     score_this_round_A = score_from_choices(first_letter, second_letter)
-    # set_trace()
     score_this_round_B = score_from_choices(
         first_letter, get_choice_for_opp_choice_and_outcome(first_letter, second_letter)
     )
@@ -86,4 +85,3 @@ for line in lines:
     score_A += score_this_round_A
 print("EXC A: ", score_A)
 print("EXC B: ", score_B)
-# For Exc B

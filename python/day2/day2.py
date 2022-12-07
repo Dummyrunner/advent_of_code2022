@@ -48,7 +48,7 @@ def get_choice_for_opp_choice_and_outcome(opp_letter, outcome_letter):
     # outcome_as_ABC = convert_XYZ_to_ABC(outcome_letter)
     ASCII_OF_X = 88
     ASCII_OF_A = 65
-    outcome_letter_to_increment = {"X": 1, "Y": 0, "Z": -1}
+    outcome_letter_to_increment = {"X": -1, "Y": 0, "Z": 1}
     normed_opp_nr = ord(opp_letter) - ASCII_OF_A  # X, Y; Z -> 0,1,2
     increment = outcome_letter_to_increment.get(outcome_letter)
     choice_nr = (normed_opp_nr + increment) % 3
@@ -65,24 +65,23 @@ def convert_ABC_to_XYZ(letter):
 
 
 input_file_path = r"./day2/input_test.txt"
-# input_file_path = r"./day2/input.txt"
+input_file_path = r"./day2/input.txt"
 file_object = open(input_file_path, "r")
 lines = file_object.readlines()
 lines = [removeLastN(line, 1) for line in lines]
 
 score_A = 0
 score_B = 0
-# For Exc A
+
 for line in lines:
     letters_tuple = parse_letters_from_line(line)
-    opp_letter = letters_tuple[0]
-    own_letter = letters_tuple[1]
-    score_this_round_A = score_from_choices(opp_letter, own_letter)
+    first_letter = letters_tuple[0]
+    second_letter = letters_tuple[1]
+    score_this_round_A = score_from_choices(first_letter, second_letter)
     score_this_round_B = score_from_choices(
-        opp_letter, get_choice_for_opp_choice_and_outcome(opp_letter, own_letter)
+        first_letter, get_choice_for_opp_choice_and_outcome(first_letter, second_letter)
     )
     score_B += score_this_round_B
     score_A += score_this_round_A
 print("EXC A: ", score_A)
 print("EXC B: ", score_B)
-# For Exc B

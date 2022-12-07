@@ -14,8 +14,18 @@ def priority_for_letter(item):
     return prio
 
 
+def common_chars_2sets(set1, set2):
+    common_chars = set1.intersection(set2)
+    return common_chars
+
+
+def common_chars_3sets(set1, set2, set3):
+    common_chars = set1.intersection(set2).intersection(set3)
+    return common_chars
+
+
 input_file_path = r"./day3/input_test.txt"
-# input_file_path = r"./day3/input.txt"
+input_file_path = r"./day3/input.txt"
 file_object = open(input_file_path, "r")
 lines = file_object.readlines()
 lines = [line.split() for line in lines]
@@ -25,10 +35,13 @@ for line in lines:
     line = line[0]
     len_line = len(line)
     len_halfline = int(len(line) / 2)
-    line_half1 = set(line[:len_halfline])
-    line_half2 = set(line[(len_halfline):])
-    common_chars_in_this_line = list(line_half1.intersection(line_half2))
+    line_half1 = line[:len_halfline]
+    line_half2 = line[(len_halfline):]
+    common_chars_in_this_line = list(
+        common_chars_2sets(set(line_half1), set(line_half2))
+    )
     common_chars_list.append(common_chars_in_this_line[0])
     prios.append(priority_for_letter(common_chars_in_this_line[0]))
-print(prios)
-print(sum(prios))
+print("day3A: ", sum(prios))
+
+# for idx in range(len(lines))

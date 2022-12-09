@@ -14,18 +14,16 @@ def line_to_range_pair(line):
     pair1 = [int(x) for x in pair1]
     range0 = range(pair0[0], pair0[1] + 1)
     range1 = range(pair1[0], pair1[1] + 1)
-    # set_trace()
     return (range0, range1)
 
 
 input_file_path = r"./day4/input_test.txt"
 # input_file_path = r"./day4/input.txt"
-
 file_object = open(input_file_path, "r")
 lines = file_object.readlines()
-# lines = [line.split() for line in lines]
-contains_ctr = 0
-overlap_ctr = 0
+
+contains_ctr = 0  # exc A
+overlap_ctr = 0  # exc B
 for line in lines:
     range_pair = line_to_range_pair(line)
     intersect_set = common_chars_2sets(set(range_pair[0]), set(range_pair[1]))
@@ -35,7 +33,5 @@ for line in lines:
     print(intersect_set)
     if intersect_set != set():
         overlap_ctr += 1
-    # set_trace()
-# set_trace()
-print("KKKKKKIO", contains_ctr)
-print("overlaps: ", overlap_ctr)
+print("EXC A", contains_ctr)
+print("EXC B: ", overlap_ctr)

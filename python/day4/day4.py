@@ -29,8 +29,6 @@ for line in lines:
     intersect_set = common_chars_2sets(set(range_pair[0]), set(range_pair[1]))
     if intersect_set == set(range_pair[0]) or intersect_set == set(range_pair[1]):
         contains_ctr += 1
-    print(list(range_pair[0]), "\t", list(range_pair[1]))
-    print(intersect_set)
     if intersect_set != set():
         overlap_ctr += 1
 print("EXC A", contains_ctr)

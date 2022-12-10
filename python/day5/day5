@@ -3,13 +3,24 @@ from ipdb import set_trace
 
 def parse_move_from_line(line):
     # amount_start_stop = [x for x in line if x.isdigit()]
+    # set_trace()
     line = line.replace("move ", "").replace("from", ",").replace("to", ",")
     line = line.split(",")
+    line = [int(x.strip()) for x in line]
     return line
 
 
-input_file_path = r"./day5/input_test.txt"
-# input_file_path = r"./day5/input.txt"
+def apply_move(move, stacks):
+    amount = move[0]
+    start_idx = move[1] - 1
+    end_idx = move[2] - 1
+    for i in range(amount):
+        picked = stacks[start_idx].pop()
+        stacks[end_idx].append(picked)
+
+
+# input_file_path = r"./day5/input_test.txt"
+input_file_path = r"./day5/input.txt"
 
 
 file_object = open(input_file_path, "r")
@@ -18,32 +29,48 @@ file_object = open(input_file_path, "r")
 lines = file_object.readlines()
 lines = [line[:-1] for line in lines]
 emptyline_idx = lines.index("")
-lines1 = lines[:(emptyline_idx)]
-lines1 = [line.replace(" ", "#") for line in lines1]
-lines2 = lines[(emptyline_idx + 1) :]
+lines_stacks = lines[:(emptyline_idx)]
+lines_stacks = [line.replace(" ", "#") for line in lines_stacks]
+lines_moves = lines[(emptyline_idx + 1) :]
 print("emptyline index", emptyline_idx)
 
 # print(lines2)
-num_of_stacks = int(max([x for x in lines1[-1] if x.isdigit()]))
-lines1.pop(-1)
+num_of_stacks = int(max([x for x in lines_stacks[-1] if x.isdigit()]))
+lines_stacks.pop(-1)
 # all_stacks = [[]] * num_of_stacks
-lines1 = [line.replace("####", "[&]") for line in lines1]
-lines1 = [line.replace("#", "") for line in lines1]
-lines1 = [line.replace("[", "").replace("]", "") for line in lines1]
+lines_stacks = [line.replace("####", "[&]") for line in lines_stacks]
+lines_stacks = [line.replace("#", "") for line in lines_stacks]
+lines_stacks = [line.replace("[", "").replace("]", "") for line in lines_stacks]
 
 
-print(lines1)
-print(lines2)
+# print(lines_stacks)
+# print(lines_moves)
 
-l = lines2[0]
-print(parse_move_from_line(l))
+line1 = lines_moves[0]
+x = parse_move_from_line(line1)
+
 stack_list = [[] for i in range(num_of_stacks)]
-set_trace()
+# set_trace()
 
-for line in lines1:
+# Place Stacks
+for line in lines_stacks:
     for char_idx in range(num_of_stacks):
         if line[char_idx] != "&":
             stack_list[char_idx].append(line[char_idx])
-
+lines_stacks = [stack.reverse() for stack in stack_list]
 
 print(stack_list)
+# Perform moves
+ctr = 1
+for moveline in lines_moves:
+    print("before move nr ", ctr, "--------------------------\n")
+    apply_move(parse_move_from_line(moveline), stack_list)
+    print(stack_list)
+    print("AFTER move nr ", ctr, "--------------------------\n")
+    ctr += 1
+# print(stack_list)
+
+stack_tops = [x[-1] for x in stack_list]
+print(stack_tops)
+stack_tops_onestring = "".join([item for item in stack_tops])
+print(stack_tops_onestring)

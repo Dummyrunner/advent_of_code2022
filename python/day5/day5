@@ -1,0 +1,34 @@
+from ipdb import set_trace
+
+
+def parse_move_from_line(line):
+    amount_start_stop = [x for x in line if x.isdigit()]
+    return amount_start_stop
+
+
+def parse_crates_from_line(line):
+    x = 1
+
+
+input_file_path = r"./day5/input_test.txt"
+# input_file_path = r"./day5/input.txt"
+
+
+file_object = open(input_file_path, "r")
+
+
+lines = file_object.readlines()
+lines = [line[:-1] for line in lines]
+lines = [line.replace(" ", "#") for line in lines]
+emptyline_idx = lines.index("")
+lines1 = lines[:(emptyline_idx)]
+lines2 = lines[(emptyline_idx + 1) :]
+print("emptyline index", emptyline_idx)
+
+# print(lines2)
+num_of_stacks = max([x for x in lines1[-1] if x.isdigit()])
+lines1.pop(-1)
+# all_stacks = [[]] * num_of_stacks
+lines1 = [line.replace("####", "[empty]") for line in lines1]
+print(lines1)
+print(lines2)

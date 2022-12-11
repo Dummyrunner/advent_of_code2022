@@ -25,14 +25,6 @@ def get_val_from_point(grid, point_x, point_y):
     return int(grid[point_x][point_y])
 
 
-def is_visible_in_direction(grid, point_x, point_y, direction):
-    point_val = get_val_from_point(grid, point_x, point_y)
-    incr_x = direction.increment_x
-    incr_y = direction.increment_y
-    curr_pos_x = point_x
-    curr_pos_y = point_y
-
-
 def is_visible(grid, point_x, point_y, directions):
     for dir in directions:
         if is_visible_in_direction_rec(grid, point_x, point_y, dir):

@@ -21,32 +21,8 @@ class Direction:
             self.increment_y = 0
 
 
-# class North:
-#     name = "north"
-#     increment_x = 0
-#     increment_y = 1
-
-
-# class West:
-#     name = "west"
-#     increment_x = -1
-#     increment_y = 0
-
-
-# class South:
-#     name = "south"
-#     increment_x = 0
-#     increment_y = -1
-
-
-# class East:
-#     name = "east"
-#     increment_x = 1
-#     increment_y = 0
-
-
 def get_val_from_point(grid, point_x, point_y):
-    return grid[point_x][point_y]
+    return int(grid[point_x][point_y])
 
 
 def is_visible_in_direction(grid, point_x, point_y, direction):
@@ -110,7 +86,7 @@ file_object = open(input_file_path, "r")
 grid = [x.strip() for x in file_object.readlines()]
 NUM_OF_ROWS = len(grid)
 NUM_OF_COLS = len(grid[0])
-set_trace()
+# set_trace()
 point_x = 1
 point_y = 1
 visibile_ctr = 2 * (NUM_OF_ROWS - 1) + 2 * (NUM_OF_COLS - 1)
@@ -124,5 +100,3 @@ for irow in range(1, NUM_OF_ROWS - 1):
 
 print("EXC 8A: visible trees\t", visibile_ctr)
 # set_trace()
-
-print(grid)

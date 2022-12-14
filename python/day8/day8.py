@@ -6,7 +6,7 @@ class Direction:
         if name == "north":
             self.name = name
             self.increment_x = 0
-            self.increment_y = -1
+            self.increment_y = 1
         elif name == "west":
             self.name = name
             self.increment_x = -1
@@ -14,7 +14,7 @@ class Direction:
         elif name == "south":
             self.name = name
             self.increment_x = 0
-            self.increment_y = 1
+            self.increment_y = -1
         elif name == "east":
             self.name = name
             self.increment_x = 1
@@ -35,18 +35,6 @@ def is_visible(grid, point_x, point_y, directions):
     return False
 
 
-# def visualize_interior_binary(grid):
-#     NUM_OF_ROWS = len(grid)
-#     NUM_OF_COLS = len(grid[0])
-#     binary_grid = [[] for i in range(NUM_OF_ROWS)]
-#     for irow in range(1, NUM_OF_ROWS):
-#             if is_visible(grid, irow, icol, directions):
-#                 binary_grid.append(1)
-#             else:
-#                 binary_grid.append(0)
-#     print(binary_grid)
-
-
 def is_visible_in_direction_rec(grid, point_x, point_y, direction):
     NUM_OF_ROWS = len(grid)
     NUM_OF_COLS = len(grid[0])
@@ -57,13 +45,9 @@ def is_visible_in_direction_rec(grid, point_x, point_y, direction):
     curr_pos_y = point_y
     new_pos_x = curr_pos_x + incr_x
     new_pos_y = curr_pos_y + incr_y
-    new_pos_out_of_bound = (
-        new_pos_x < 0
-        or curr_pos_x > NUM_OF_COLS - 1
-        or curr_pos_y < 0
-        or curr_pos_y > NUM_OF_ROWS - 1
-    )
-    if new_pos_out_of_bound:
+    new_pos_x_out_of_bound = new_pos_x < 0 or new_pos_x > NUM_OF_COLS - 1
+    new_pos_y_out_of_bound = new_pos_y < 0 or new_pos_y > NUM_OF_COLS - 1
+    if new_pos_x_out_of_bound or new_pos_y_out_of_bound:
         return True
     elif get_val_from_point(grid, new_pos_x, new_pos_y) >= point_val:
         return False

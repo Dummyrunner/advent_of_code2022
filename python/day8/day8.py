@@ -133,6 +133,7 @@ directions = [
 input_file_path = r"./day8/input_test.txt"
 # input_file_path = r"./day8/input.txt"
 
+# Parse Input file
 file_object = open(input_file_path, "r")
 # remove \n from strings with strip()
 grid = [x.strip() for x in file_object.readlines()]
@@ -142,6 +143,7 @@ NUM_OF_COLS = len(grid[0])
 visibile_ctr = 2 * (NUM_OF_ROWS - 1) + 2 * (NUM_OF_COLS - 1)
 print("number of boundary trees:\t", visibile_ctr)
 
+# Iterate over interior points of grid
 for irow in range(1, NUM_OF_ROWS - 1):
     for icol in range(1, NUM_OF_COLS - 1):
         print(

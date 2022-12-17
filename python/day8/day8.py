@@ -1,10 +1,10 @@
+# ipdb Debugger. add line set_trace() to enter debugger there
 from ipdb import set_trace
-import logging as log
-
-# log.basicConfig(level=log.DEBUG)
 
 
 class Direction:
+    """Class for directions, with increments to add on a coordinate to move in this direction"""
+
     def __init__(self, name):
         if name == "north":
             self.name = name
@@ -25,10 +25,12 @@ class Direction:
 
 
 def get_val_from_point(grid, point_x, point_y):
+    """evaluate grid value at given coordinates"""
     return int(grid[point_y][point_x])
 
 
 def is_visible(grid, point_x, point_y, directions):
+    """Check whether point given by coordinates point_x, point_y is visible in grid"""
     for dir in directions:
         if is_visible_in_direction_rec(grid, point_x, point_y, dir):
             print(
@@ -53,6 +55,7 @@ def is_visible(grid, point_x, point_y, directions):
 
 
 def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
+    """Check recursively, whether point given by curr_pos is visible in direction "direction" """
     # print("check direction\t", direction.name, "now (recursive)")
 
     NUM_OF_ROWS = len(grid)
@@ -129,16 +132,16 @@ directions = [
 
 input_file_path = r"./day8/input_test.txt"
 # input_file_path = r"./day8/input.txt"
+
 file_object = open(input_file_path, "r")
+# remove \n from strings with strip()
 grid = [x.strip() for x in file_object.readlines()]
 NUM_OF_ROWS = len(grid)
 NUM_OF_COLS = len(grid[0])
-# set_trace()
-zero_line = [0 for i in range(NUM_OF_COLS - 2)]
-zero_grid = [zero_line for i in range(NUM_OF_ROWS - 2)]
-print(zero_grid)
+# trees on boundary are visible
 visibile_ctr = 2 * (NUM_OF_ROWS - 1) + 2 * (NUM_OF_COLS - 1)
 print("number of boundary trees:\t", visibile_ctr)
+
 for irow in range(1, NUM_OF_ROWS - 1):
     for icol in range(1, NUM_OF_COLS - 1):
         print(
@@ -149,15 +152,5 @@ for irow in range(1, NUM_OF_ROWS - 1):
             "), Value: ",
             get_val_from_point(grid, icol, irow),
         )
-        if is_visible(grid, icol, irow, directions):
-            visibile_ctr += 1
-            # print("icol, irow = ", icol, ", ", irow)
-            zero_grid[irow - 1][icol - 1] = 1
-        else:
-            zero_grid[irow - 1][icol - 1] = 0
-
-    # print("in ", dir.name, "visible is", vis)
-    # visibilities.append(vis)
-print("interior:\n", zero_grid)
 print("EXC 8A: visible trees\t", visibile_ctr)
 # set_trace()

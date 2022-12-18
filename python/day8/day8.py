@@ -85,7 +85,7 @@ def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
     #     "; posy out of b:",
     #     new_pos_y_out_of_bound,
     # )
-    # set_trace()
+    set_trace()
     if new_pos_x_out_of_bound or new_pos_y_out_of_bound:
         return True
     else:
@@ -118,11 +118,7 @@ def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
             return is_visible_in_direction_rec(grid, new_pos_x, new_pos_y, direction)
 
 
-NORTH = 0
-EAST = 1
-SOUTH = 2
-WEST = 3
-directions = [
+directions_NESW = [
     Direction("north"),
     Direction("east"),
     Direction("south"),
@@ -154,5 +150,7 @@ for irow in range(1, NUM_OF_ROWS - 1):
             "), Value: ",
             get_val_from_point(grid, icol, irow),
         )
+        if is_visible(grid, icol, irow, directions_NESW):
+            visibile_ctr += 1
 print("EXC 8A: visible trees\t", visibile_ctr)
 # set_trace()

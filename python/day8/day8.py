@@ -32,7 +32,8 @@ def get_val_from_point(grid, point_x, point_y):
 def is_visible(grid, point_x, point_y, directions):
     """Check whether point given by coordinates point_x, point_y is visible in grid"""
     for dir in directions:
-        if is_visible_in_direction_rec(grid, point_x, point_y, dir):
+        start_val = get_val_from_point(grid, point_x, point_y)
+        if is_visible_in_direction_rec(grid, point_x, point_y, start_val, dir):
             print(
                 "---- VIS: point (",
                 point_x,
@@ -54,7 +55,7 @@ def is_visible(grid, point_x, point_y, directions):
     return False
 
 
-def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
+def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, start_val, direction):
     """Check recursively, whether point given by curr_pos is visible in direction "direction" """
     # print("check direction\t", direction.name, "now (recursive)")
 
@@ -85,13 +86,13 @@ def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
     #     "; posy out of b:",
     #     new_pos_y_out_of_bound,
     # )
-    set_trace()
+    # set_trace()
     if new_pos_x_out_of_bound or new_pos_y_out_of_bound:
         return True
     else:
         new_point_val = get_val_from_point(grid, new_pos_x, new_pos_y)
 
-        if new_point_val >= point_val:
+        if new_point_val >= start_val:
             # print(
             #     "point (",
             #     curr_pos_x,
@@ -115,7 +116,9 @@ def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, direction):
                 " for checking dir: ",
                 direction.name,
             )
-            return is_visible_in_direction_rec(grid, new_pos_x, new_pos_y, direction)
+            return is_visible_in_direction_rec(
+                grid, new_pos_x, new_pos_y, start_val, direction
+            )
 
 
 directions_NESW = [
@@ -127,7 +130,7 @@ directions_NESW = [
 
 
 input_file_path = r"./day8/input_test.txt"
-# input_file_path = r"./day8/input.txt"
+input_file_path = r"./day8/input.txt"
 
 # Parse Input file
 file_object = open(input_file_path, "r")

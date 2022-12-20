@@ -179,34 +179,13 @@ print("number of boundary trees:\t", visibile_ctr)
 for irow in range(1, NUM_OF_ROWS - 1):
     for icol in range(1, NUM_OF_COLS - 1):
         # EXC A
-        # print(
-        #     "Current Point:\t(",
-        #     icol,
-        #     ",",
-        #     irow,
-        #     "), Value: ",
-        #     get_val_from_point(grid, icol, irow),
-        # )
         if is_visible(grid, icol, irow, directions_NESW):
             visibile_ctr += 1
-
-
-# set_trace()
-# # EXC B
-# for irow in range(NUM_OF_ROWS - 1):
-#     for icol in range(NUM_OF_COLS - 1):
-#         curr_scenic_score = scenic_score(grid, icol, irow, directions_NESW)
-#         print("Point (", icol, ",", irow, ") curr scenic score:\t", curr_scenic_score)
-#         # set_trace()
-#         if scenic_score_max < curr_scenic_score:
-#             scenic_score_max = curr_scenic_score
-for irow in range(1, NUM_OF_ROWS - 1):
-    for icol in range(1, NUM_OF_COLS - 1):
+        # EXC B
         curr_scenic_score = scenic_score(grid, icol, irow, directions_NESW)
         print(
             ">> Point (", icol, ",", irow, ") curr scenic score:\t", curr_scenic_score
         )
-        # set_trace()
         if scenic_score_max < curr_scenic_score:
             scenic_score_max = curr_scenic_score
 

@@ -113,7 +113,7 @@ def is_visible_in_direction_rec(grid, curr_pos_x, curr_pos_y, start_val, directi
 
 
 def vis_range_in_dir(grid, point_x, point_y, dir):
-    vis_ctr = 1
+    vis_ctr = 0
     considered_tree_val = get_val_from_point(grid, point_x, point_y)
     next_x = point_x + dir.increment_x
     next_y = point_y + dir.increment_y
@@ -124,7 +124,12 @@ def vis_range_in_dir(grid, point_x, point_y, dir):
         vis_ctr += 1
         next_x += dir.increment_x
         next_y += dir.increment_y
-    return vis_ctr
+
+    # blocking trees are counted as visible tree
+    if is_out_of_bound(grid, next_x, next_y):
+        return vis_ctr
+    else:
+        return vis_ctr + 1
 
 
 def scenic_score(grid, point_x, point_y, directions):
@@ -157,7 +162,7 @@ directions_NESW = [
 
 
 input_file_path = r"./day8/input_test.txt"
-# input_file_path = r"./day8/input.txt"
+input_file_path = r"./day8/input.txt"
 
 # Parse Input file
 file_object = open(input_file_path, "r")

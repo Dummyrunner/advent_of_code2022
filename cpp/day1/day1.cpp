@@ -5,14 +5,28 @@
 #include <vector>
 using namespace std;
 
-template <typename TypeT> TypeT getMaxValFromVector(vector<TypeT> &vec) {
-  TypeT max_val = numeric_limits<TypeT>::min();
-  for (int i = 0; i < vec.size(); ++i) {
-    if (vec[i] > max_val) {
-      max_val = vec[i];
+template <typename TypeT>
+vector<TypeT> getMaxNValsFromVector(vector<TypeT> vec, const int N = 1) {
+
+  vector<TypeT> max_entries;
+
+  for (int imax_entry = 0; imax_entry < N; ++imax_entry) {
+    TypeT max_val = numeric_limits<TypeT>::min();
+    size_t max_index{0};
+
+    for (int i = 0; i < vec.size(); ++i) {
+      if (vec[i] > max_val) {
+        max_val = vec[i];
+        max_index = i;
+      }
     }
+    max_entries.push_back(max_val);
+    vec.erase(vec.begin() + max_index);
+    cout << imax_entry << "/" << N << ": add " << max_val << " to the max list"
+         << endl;
   }
-  return max_val;
+
+  return max_entries;
 }
 
 template <typename TypeT> TypeT sumOverVectorElements(vector<TypeT> &vec) {
@@ -48,10 +62,13 @@ vector<string> extractPathToLineVector(string const &file_path) {
 }
 
 int main() {
-  // string path = "./day1/input_test.txt";
-  string path = "./day1/input.txt";
+  string path = "./day1/input_test.txt";
+  // string path = "./day1/input.txt";
 
   vector<string> lines = extractPathToLineVector(path);
+  cout << "READ LINES:\n" << endl;
+  printAllVectorEntries(lines);
+  cout << "------------------------" << endl;
   vector<int> sums;
 
   int current_sum{0};
@@ -66,6 +83,11 @@ int main() {
     }
   }
 
-  int res = getMaxValFromVector(sums);
-  cout << "EXC 1A:\t" << res << endl;
+  printAllVectorEntries(sums);
+
+  cout << "------------------------" << endl;
+  vector<int> three_largest_vals = getMaxNValsFromVector(sums, 3);
+
+  cout << "EXC 1A:\t" << three_largest_vals.at(0) << endl;
+  cout << "EXC 1B:\t" << sumOverVectorElements(three_largest_vals) << endl;
 }

@@ -9,8 +9,6 @@ template <typename TypeT> TypeT getMaxValFromVector(vector<TypeT> &vec) {
   TypeT max_val = numeric_limits<TypeT>::min();
   for (int i = 0; i < vec.size(); ++i) {
     if (vec[i] > max_val) {
-      cout << "curr max vak\t" << max_val << "\tcurr vec entry:\t" << vec[i]
-           << endl;
       max_val = vec[i];
     }
   }
@@ -35,30 +33,29 @@ vector<string> extractPathToLineVector(string const &file_path) {
   fstream file;
   string read;
   vector<string> lines;
-  file.open(file_path);
-  while (getline(file, read)) {
-    lines.push_back(read);
+  try {
+    file.open(file_path);
+    if (!file) {
+      throw runtime_error("file failed to open");
+    }
+    while (getline(file, read)) {
+      lines.push_back(read);
+    }
+  } catch (exception &e) {
+    cerr << e.what() << endl;
   }
   return lines;
 }
 
-class Backpack {
-private:
-  vector<int> cal_numbers;
-
-public:
-  void append(int ip) { cal_numbers.push_back(ip); }
-  int sum() { return sumOverVectorElements(cal_numbers); }
-};
-
 int main() {
-
-  string path = "./day1/input_test.txt";
+  // string path = "./day1/input_test.txt";
+  string path = "./day1/input.txt";
 
   vector<string> lines = extractPathToLineVector(path);
-  int current_sum{0};
   vector<int> sums;
 
+  int current_sum{0};
+  // TODO: Last entry skipped
   for (int i = 0; i < lines.size(); ++i) {
     string current_line = lines[i];
     if (current_line == "") {
@@ -69,7 +66,6 @@ int main() {
     }
   }
 
-  printAllVectorEntries(sums);
   int res = getMaxValFromVector(sums);
   cout << "EXC 1A:\t" << res << endl;
 }

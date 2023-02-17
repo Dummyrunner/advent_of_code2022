@@ -37,7 +37,7 @@ template <typename TypeT> void printAllVectorEntries(vector<TypeT> &vec) {
   }
 }
 
-vector<string> extractPathToLineVector(string const &file_path) {
+vector<string> extractFileToLineVector(string const &file_path) {
   fstream file;
   string read;
   vector<string> lines;
@@ -59,7 +59,7 @@ int main() {
   // string path = "./day1/input_test.txt";
   string path = "./day1/input.txt";
 
-  vector<string> lines = extractPathToLineVector(path);
+  vector<string> lines = extractFileToLineVector(path);
   // append empty string to get last entry processed
   lines.push_back("");
 

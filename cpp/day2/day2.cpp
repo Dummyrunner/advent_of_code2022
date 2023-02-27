@@ -18,15 +18,34 @@ std::pair<char, char> splitCharPairSeparatedBy(std::string str,
   return res_pair;
 }
 
+enum class RockPaperScissors { kRock = 0, kPaper, kScissors };
+
+RockPaperScissors getMoveFromChar(const char &input_char) {
+  try {
+    if (input_char == 'A' || input_char == 'X') {
+      return RockPaperScissors::kRock;
+    } else if (input_char == 'B' || input_char == 'Y') {
+      return RockPaperScissors::kPaper;
+    } else if (input_char == 'C' || input_char == 'Z') {
+      return RockPaperScissors::kScissors;
+    } else {
+      throw input_char;
+    }
+  } catch (char wrong_char) {
+    std::cerr << "char is not valid: " << wrong_char;
+  }
+}
+
 int main() {
   std::string path = "./day2/input_test.txt";
   // std::string path = "./day2/input.txt";
   std::vector<std::string> lines = extractFileToLineVector(path);
   printAllVectorEntries(lines);
 
-  for (int i = 0; i < 3; ++i) {
-    auto x = splitCharPairSeparatedBy(lines[i], ' ');
-    std::cout << x.first << std::endl;
-    std::cout << x.second << std::endl;
-  }
+  // for (int i = 0; i < 3; ++i) {
+  auto x = splitCharPairSeparatedBy(lines[0], ' ');
+  //   std::cout << x.first << std::endl;
+  //   std::cout << x.second << std::endl;
+  // }
+  // std::cout << getMoveFromChar(x.first) << "\t" << getMoveFromChar(x.second);
 }

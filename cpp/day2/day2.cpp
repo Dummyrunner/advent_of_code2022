@@ -18,7 +18,8 @@ std::pair<char, char> splitCharPairSeparatedBy(std::string str,
   return res_pair;
 }
 
-enum class RockPaperScissors { kRock = 0, kPaper, kScissors };
+enum RockPaperScissors { kRock = 0, kPaper, kScissors, kInvalid = 1000 };
+enum Reward { kLoss = 0, kDraw = 3, kWin = 6 };
 
 RockPaperScissors getMoveFromChar(const char &input_char) {
   try {
@@ -33,19 +34,39 @@ RockPaperScissors getMoveFromChar(const char &input_char) {
     }
   } catch (char wrong_char) {
     std::cerr << "char is not valid: " << wrong_char;
+    return RockPaperScissors::kInvalid;
   }
 }
 
+int rewardFromOwnMoveOpponentMove(RockPaperScissors own_move,
+                                  RockPaperScissors opponent_move) {
+  // scores for win/loss/draw only: {{3, 6, 0}, {0, 3, 6}, {6, 0, 3}};
+  int reward_matrix[3][3] = {{4, 7, 1}, {2, 5, 8}, {9, 3, 6}};
+  return reward_matrix[opponent_move][own_move];
+}
+
+int ex[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+
 int main() {
+  std::cout << ex[1][0] << "\n";
+
   std::string path = "./day2/input_test.txt";
   // std::string path = "./day2/input.txt";
+
   std::vector<std::string> lines = extractFileToLineVector(path);
   printAllVectorEntries(lines);
-
-  // for (int i = 0; i < 3; ++i) {
-  auto x = splitCharPairSeparatedBy(lines[0], ' ');
-  //   std::cout << x.first << std::endl;
-  //   std::cout << x.second << std::endl;
-  // }
-  // std::cout << getMoveFromChar(x.first) << "\t" << getMoveFromChar(x.second);
+  int total_score{0};
+  constexpr char blank{' '};
+  for (std::string line : lines) {
+    auto letter_pair = splitCharPairSeparatedBy(line, blank);
+    RockPaperScissors own_move = getMoveFromChar(letter_pair.second);
+    RockPaperScissors opponent_move = getMoveFromChar(letter_pair.first);
+    total_score += rewardFromOwnMoveOpponentMove(own_move, opponent_move);
+    std::cout << "current score: " << total_score << std::endl;
+  }
+  std::cout << "EXC 1A:\t" << total_score << std::endl;
+  std::cout << "----------0\n" << std::endl;
+  std::cout << rewardFromOwnMoveOpponentMove(RockPaperScissors::kPaper,
+                                             RockPaperScissors::kRock)
+            << std::endl;
 }

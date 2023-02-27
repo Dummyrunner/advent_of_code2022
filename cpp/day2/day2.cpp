@@ -3,7 +3,8 @@
 #include <sstream>
 #include <string>
 
-// g++ -I ./common ./day2/day2.cpp -o ./build/day2
+// build and run:
+// g++ -I ./common ./day2/day2.cpp -o ./build/day2 && ./build/day2
 
 std::pair<char, char> splitCharPairSeparatedBy(std::string str,
                                                char separator_char) {
@@ -40,33 +41,21 @@ RockPaperScissors getMoveFromChar(const char &input_char) {
 
 int rewardFromOwnMoveOpponentMove(RockPaperScissors own_move,
                                   RockPaperScissors opponent_move) {
-  // scores for win/loss/draw only: {{3, 6, 0}, {0, 3, 6}, {6, 0, 3}};
-  int reward_matrix[3][3] = {{4, 7, 1}, {2, 5, 8}, {9, 3, 6}};
+  int reward_matrix[3][3] = {{4, 8, 3}, {1, 5, 9}, {7, 2, 6}};
   return reward_matrix[opponent_move][own_move];
 }
 
-int ex[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-
 int main() {
-  std::cout << ex[1][0] << "\n";
-
   std::string path = "./day2/input_test.txt";
   // std::string path = "./day2/input.txt";
 
   std::vector<std::string> lines = extractFileToLineVector(path);
-  printAllVectorEntries(lines);
   int total_score{0};
-  constexpr char blank{' '};
   for (std::string line : lines) {
-    auto letter_pair = splitCharPairSeparatedBy(line, blank);
+    auto letter_pair = splitCharPairSeparatedBy(line, ' ');
     RockPaperScissors own_move = getMoveFromChar(letter_pair.second);
     RockPaperScissors opponent_move = getMoveFromChar(letter_pair.first);
     total_score += rewardFromOwnMoveOpponentMove(own_move, opponent_move);
-    std::cout << "current score: " << total_score << std::endl;
   }
   std::cout << "EXC 1A:\t" << total_score << std::endl;
-  std::cout << "----------0\n" << std::endl;
-  std::cout << rewardFromOwnMoveOpponentMove(RockPaperScissors::kPaper,
-                                             RockPaperScissors::kRock)
-            << std::endl;
 }

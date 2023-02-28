@@ -39,32 +39,30 @@ RockPaperScissors getMoveFromChar(const char &input_char) {
   }
 }
 
+int outcomeToNumber(char outcome) {
+  switch (outcome) {
+  case 'X':
+    return 0;
+    break;
+  case 'Y':
+    return 1;
+    break;
+  case 'Z':
+    return 2;
+    break;
+  default:
+    return 1000;
+    break;
+  }
+}
+
 RockPaperScissors
 moveFromOpponentMoveAndOutcome(RockPaperScissors opponent_move,
                                char desired_outcome) {
-
-  int outcome_num;
+  int outcome_num{outcomeToNumber(desired_outcome)};
   RockPaperScissors decision_matrix[3][3] = {{kScissors, kRock, kPaper},
                                              {kRock, kPaper, kScissors},
                                              {kPaper, kScissors, kRock}};
-  switch (desired_outcome) {
-  case 'X':
-    outcome_num = 0;
-    break;
-  case 'Y':
-    outcome_num = 1;
-    break;
-  case 'Z':
-    outcome_num = 2;
-    break;
-  default:
-    outcome_num = 1000;
-    break;
-  }
-
-  std::cout << "coordinates are (" << opponent_move << "," << outcome_num
-            << ")\n";
-  // return decision_matrix[opponent_move][outcome_num];
   return decision_matrix[opponent_move][outcome_num];
 }
 
@@ -73,11 +71,11 @@ int rewardFromOwnMoveOpponentMove(RockPaperScissors own_move,
   int reward_matrix[3][3] = {{4, 8, 3}, {1, 5, 9}, {7, 2, 6}};
   return reward_matrix[opponent_move][own_move];
 }
-// for exc B: X: lose, Y: draw, Z: win
 
+// desired outcome for exc B: X: lose, Y: draw, Z: win
 int main() {
-  std::string path = "./day2/input_test.txt";
-  // std::string path = "./day2/input.txt";
+  // std::string path = "./day2/input_test.txt";
+  std::string path = "./day2/input.txt";
 
   std::vector<std::string> lines = extractFileToLineVector(path);
   int total_score_A{0};
@@ -86,12 +84,9 @@ int main() {
     auto letter_pair = splitCharPairSeparatedBy(line, ' ');
     RockPaperScissors own_move = getMoveFromChar(letter_pair.second);
     RockPaperScissors opponent_move = getMoveFromChar(letter_pair.first);
-
     RockPaperScissors move_for_outcome =
-        moveFromOpponentMoveAndOutcome(own_move, letter_pair.second);
-
+        moveFromOpponentMoveAndOutcome(opponent_move, letter_pair.second);
     total_score_A += rewardFromOwnMoveOpponentMove(own_move, opponent_move);
-
     std::cout << rewardFromOwnMoveOpponentMove(move_for_outcome, opponent_move)
               << std::endl;
     total_score_B +=

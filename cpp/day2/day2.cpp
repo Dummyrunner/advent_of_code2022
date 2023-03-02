@@ -87,8 +87,6 @@ int main() {
     RockPaperScissors move_for_outcome =
         moveFromOpponentMoveAndOutcome(opponent_move, letter_pair.second);
     total_score_A += rewardFromOwnMoveOpponentMove(own_move, opponent_move);
-    std::cout << rewardFromOwnMoveOpponentMove(move_for_outcome, opponent_move)
-              << std::endl;
     total_score_B +=
         rewardFromOwnMoveOpponentMove(move_for_outcome, opponent_move);
   }

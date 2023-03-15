@@ -77,7 +77,7 @@ int main() {
   // std::string path = "./day2/input_test.txt";
   std::string path = "./day2/input.txt";
 
-  std::vector<std::string> lines = extractFileToLineVector(path);
+  std::vector<std::string> lines = utils::extractFileToLineVector(path);
   int total_score_A{0};
   int total_score_B{0};
   for (std::string line : lines) {

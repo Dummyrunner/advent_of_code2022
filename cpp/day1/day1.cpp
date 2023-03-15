@@ -1,10 +1,16 @@
 #include "vector_utils.hpp"
 
+#include <iostream>
+#include <vector>
+
+// build and run:
+// g++ -I ./common ./day1/day1.cpp -o ./build/day1 && ./build/day1
+
 int main() {
   // string path = "./day1/input_test.txt";
   std::string path = "./day1/input.txt";
 
-  std::vector<std::string> lines = extractFileToLineVector(path);
+  std::vector<std::string> lines = utils::extractFileToLineVector(path);
   // append empty string to get last entry processed
   lines.push_back("");
 
@@ -22,8 +28,8 @@ int main() {
     }
   }
 
-  std::vector<int> three_largest_vals = getMaxNValsFromVector(sums, 3);
+  std::vector<int> three_largest_vals = utils::getMaxNValsFromVector(sums, 3);
   std::cout << "EXC 1A:\t" << three_largest_vals.at(0) << std::endl;
-  std::cout << "EXC 1B:\t" << sumOverVectorElements(three_largest_vals)
+  std::cout << "EXC 1B:\t" << utils::sumOverVectorElements(three_largest_vals)
             << std::endl;
 }

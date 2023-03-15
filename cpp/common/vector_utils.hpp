@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+namespace utils {
+
 template <typename TypeT>
 std::vector<TypeT> getMaxNValsFromVector(std::vector<TypeT> vec,
                                          const int N = 1);
@@ -28,3 +30,4 @@ std::vector<std::string> extractFileToLineVector(std::string const &file_path) {
   }
   return lines;
 }
+} // namespace utils

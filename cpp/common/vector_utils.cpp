@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+namespace utils {
 template <typename TypeT>
 std::vector<TypeT> getMaxNValsFromVector(std::vector<TypeT> vec,
                                          const int N = 1) {
@@ -38,3 +39,4 @@ template <typename TypeT> void printAllVectorEntries(std::vector<TypeT> &vec) {
     std::cout << el << std::endl;
   }
 }
+} // namespace utils

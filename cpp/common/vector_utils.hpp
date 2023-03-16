@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -16,6 +17,7 @@ template <typename TypeT> void printAllVectorEntries(std::vector<TypeT> &vec) {
     std::cout << el << std::endl;
   }
 }
+
 std::vector<std::string> extractFileToLineVector(std::string const &file_path) {
   std::fstream file;
   std::string read;
@@ -32,5 +34,11 @@ std::vector<std::string> extractFileToLineVector(std::string const &file_path) {
     std::cerr << e.what() << std::endl;
   }
   return lines;
+}
+
+template <typename TypeT> void dropDuplicates(std::vector<TypeT> &vec) {
+  std::sort(vec.begin(), vec.end());
+  auto last = std::unique(vec.begin(), vec.end());
+  vec.erase(last, vec.end());
 }
 } // namespace utils

@@ -90,6 +90,6 @@ int main() {
     total_score_B +=
         rewardFromOwnMoveOpponentMove(move_for_outcome, opponent_move);
   }
-  std::cout << "EXC 1A:\t" << total_score_A << std::endl;
-  std::cout << "EXC 1B:\t" << total_score_B << std::endl;
+  std::cout << "EXC 2A:\t" << total_score_A << std::endl;
+  std::cout << "EXC 2B:\t" << total_score_B << std::endl;
 }

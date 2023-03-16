@@ -34,9 +34,4 @@ template <typename TypeT> TypeT sumOverVectorElements(std::vector<TypeT> &vec) {
   return sum;
 }
 
-template <typename TypeT> void printAllVectorEntries(std::vector<TypeT> &vec) {
-  for (auto el : vec) {
-    std::cout << el << std::endl;
-  }
-}
 } // namespace utils

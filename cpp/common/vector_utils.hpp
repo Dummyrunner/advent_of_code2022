@@ -11,8 +11,11 @@ std::vector<TypeT> getMaxNValsFromVector(std::vector<TypeT> vec,
                                          const int N = 1);
 
 template <typename TypeT> TypeT sumOverVectorElements(std::vector<TypeT> &vec);
-template <typename TypeT> void printAllVectorEntries(std::vector<TypeT> &vec);
-
+template <typename TypeT> void printAllVectorEntries(std::vector<TypeT> &vec) {
+  for (auto el : vec) {
+    std::cout << el << std::endl;
+  }
+}
 std::vector<std::string> extractFileToLineVector(std::string const &file_path) {
   std::fstream file;
   std::string read;

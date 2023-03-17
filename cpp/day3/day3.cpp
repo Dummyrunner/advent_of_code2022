@@ -44,7 +44,6 @@ std::vector<char> commonChars(const std::string &str1,
   }
   return res;
 }
-// template <typename TypeT> void dropDuplicates(const std::vector<TypeT> &vec);
 
 int valueFromChar(const char &c) {
   // a -> 1, z->26
@@ -63,10 +62,11 @@ int valueFromChar(const char &c) {
 std::vector<char> commonCharsOfThreeStrings(const std::string &str1,
                                             const std::string &str2,
                                             const std::string &str3) {
-  // auto std::vector<char> common_chars();
   auto common_chars = commonChars(str1, str2);
   std::string string_from_common_chars{utils::vecOfCharsToString(common_chars)};
-  return commonChars(string_from_common_chars, str3);
+  common_chars = commonChars(string_from_common_chars, str3);
+  utils::dropDuplicates(common_chars);
+  return common_chars;
 }
 
 int main() {
@@ -75,18 +75,32 @@ int main() {
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
 
   int total_score_A{0};
-  std::vector<std::string> common_chars;
-  for (std::string line : lines) {
-    std::pair<std::string, std::string> split = splitStringInHalf(line);
+  int total_score_B{0};
 
+  std::vector<std::string> common_chars;
+  std::vector<std::string> current_string_triplet;
+  for (size_t iline{0}; iline < lines.size(); ++iline) {
+    auto line = lines[iline];
+
+    // EXC A
+    std::pair<std::string, std::string> split = splitStringInHalf(line);
     auto common_chars_for_this_line = commonChars(split.first, split.second);
     utils::dropDuplicates(common_chars_for_this_line);
     for (char c : common_chars_for_this_line) {
       total_score_A += valueFromChar(c);
     }
+
+    // EXC B
+    current_string_triplet.push_back(line);
+    if (iline != 0 && (iline + 1) % 3 == 0) {
+      auto triplet_common_char_vec = commonCharsOfThreeStrings(
+          current_string_triplet[0], current_string_triplet[1],
+          current_string_triplet[2]);
+      total_score_B += valueFromChar(triplet_common_char_vec[0]);
+      current_string_triplet.clear();
+    }
   }
+
   std::cout << "EXC 3A:\t" << total_score_A << std::endl;
-  auto cs = commonCharsOfThreeStrings("abEc", "cDE", "Ecx");
-  utils::printAllVectorEntries(cs);
-  //   std::cout << "EXC 3B:\t" << total_score_B << std::endl;
+  std::cout << "EXC 3B:\t" << total_score_B << std::endl;
 }

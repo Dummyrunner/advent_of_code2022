@@ -41,4 +41,8 @@ template <typename TypeT> void dropDuplicates(std::vector<TypeT> &vec) {
   auto last = std::unique(vec.begin(), vec.end());
   vec.erase(last, vec.end());
 }
+
+std::string vecOfCharsToString(std::vector<char> charvec) {
+  return std::string(charvec.begin(), charvec.end());
+}
 } // namespace utils

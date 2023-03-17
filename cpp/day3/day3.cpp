@@ -60,6 +60,15 @@ int valueFromChar(const char &c) {
   return c_is_lower_case ? ascii - 96 : ascii - 38;
 }
 
+std::vector<char> commonCharsOfThreeStrings(const std::string &str1,
+                                            const std::string &str2,
+                                            const std::string &str3) {
+  // auto std::vector<char> common_chars();
+  auto common_chars = commonChars(str1, str2);
+  std::string string_from_common_chars{utils::vecOfCharsToString(common_chars)};
+  return commonChars(string_from_common_chars, str3);
+}
+
 int main() {
   // std::string path = "./day3/input_test.txt";
   std::string path = "./day3/input.txt";
@@ -77,5 +86,7 @@ int main() {
     }
   }
   std::cout << "EXC 3A:\t" << total_score_A << std::endl;
+  auto cs = commonCharsOfThreeStrings("abEc", "cDE", "Ecx");
+  utils::printAllVectorEntries(cs);
   //   std::cout << "EXC 3B:\t" << total_score_B << std::endl;
 }

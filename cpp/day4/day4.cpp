@@ -8,6 +8,38 @@
 // build and run:
 // g++ -I ./common ./day4/day4.cpp -o ./build/day4 && ./build/day4
 
+template <typename TypeT> class Interval {
+public:
+  Interval(TypeT lower, TypeT upper) { setBounds(lower, upper); }
+  void setBounds(TypeT lower, TypeT upper) {
+    if (upper < lower) {
+      throw std::runtime_error("Upper bound is smaller than lower bound!");
+    }
+    m_upper_bound = upper;
+    m_lower_bound = lower;
+  }
+
+  bool includes(Interval &other) {
+    return (this->m_upper_bound >= other.m_upper_bound &&
+            this->m_lower_bound <= other.m_lower_bound);
+  }
+
+  bool intersects(Interval &other) {
+    bool other_lower_inside{this->m_lower_bound <= other.m_lower_bound &&
+                            this->m_upper_bound >= other.m_lower_bound};
+    bool other_upper_inside{this->m_lower_bound <= other.m_upper_bound &&
+                            this->m_upper_bound >= other.m_upper_bound};
+
+    bool other_includes_this{other.includes(*this)};
+
+    return other_lower_inside || other_upper_inside || other_includes_this;
+  }
+
+private:
+  TypeT m_upper_bound;
+  TypeT m_lower_bound;
+};
+
 std::vector<std::string> splitStringAtChar(const std::string &str,
                                            char separator) {
   std::vector<std::string> res;
@@ -27,43 +59,42 @@ std::pair<int, int> parseIntMinusIntToPair(const std::string &str) {
   return res;
 }
 
-template <typename TypeT> class Interval {
-public:
-  Interval(TypeT lower, TypeT upper) { setBounds(lower, upper); }
-  void setBounds(TypeT lower, TypeT upper) {
-    if (upper < lower) {
-      throw std::runtime_error("Upper bound is smaller than lower bound!");
-    }
-    m_upper_bound = upper;
-    m_lower_bound = lower;
-  }
-
-  bool includes(Interval &other) {
-    return (this.m_upper_bound >= other.m_upper_bound &&
-            this.m_lower_bound <= other.m_lower_bound);
-  }
-
-  // TODO bool intersects(Interval &other) {return false;}
-
-private:
-  TypeT m_upper_bound;
-  TypeT m_lower_bound;
-};
+// std::vector<Interval> parseLineToIntervalVector(std::string &line) {
+//   std::vector<Interval> res(2);
+//   auto vec_of_substrings = splitStringAtChar(line, ',');
+//   auto boundary_pair1 = parseIntMinusIntToPair(vec_of_substrings.first);
+//   auto boundary_pair2 = parseIntMinusIntToPair(vec_of_substrings.second);
+//   res[0] = Interval(boundary_pair1.first, boundary_pair1.second);
+//   res[1] = Interval(boundary_pair2.first, boundary_pair2.second);
+//   // vec_of_substrings[0];
+// }
 
 int main() {
   // std::string path = "./day4/input_test.txt";
   std::string path = "./day4/input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
 
-  std::string test_string = "1-2,3-4,5-6";
-  auto res_vec = splitStringAtChar(test_string, ',');
-  std::string one = res_vec.back();
-  utils::printAllVectorEntries(res_vec);
-  auto eumel = parseIntMinusIntToPair(one);
+  int total_score_A{0};
+  int total_score_B{0};
 
-  std::cout << eumel.first << std::endl;
-  std::cout << eumel.second << std::endl;
+  for (auto line : lines) {
+    auto vec_of_substrings = splitStringAtChar(line, ',');
+    std::vector<std::pair<int, int>> range_pairs;
+    for (auto rangestring : vec_of_substrings) {
+      range_pairs.push_back(parseIntMinusIntToPair(rangestring));
+    }
+    auto pair1 = range_pairs[0];
+    auto pair2 = range_pairs[1];
+    Interval<int> interval1 = Interval<int>(pair1.first, pair1.second);
+    Interval<int> interval2 = Interval<int>(pair2.first, pair2.second);
 
-  //   std::cout << "EXC 4A:\t" << total_score_A << std::endl;
-  //   std::cout << "EXC 4B:\t" << total_score_B << std::endl;
+    if (interval1.includes(interval2) || interval2.includes(interval1)) {
+      ++total_score_A;
+    }
+    if (interval1.intersects(interval2)) {
+      ++total_score_B;
+    }
+  }
+  std::cout << "EXC 4A:\t" << total_score_A << std::endl;
+  std::cout << "EXC 4B:\t" << total_score_B << std::endl;
 }

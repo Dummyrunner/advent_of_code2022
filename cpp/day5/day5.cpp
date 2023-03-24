@@ -6,7 +6,7 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day5/day4.cpp -o ./build/day5 && ./build/day5
+// g++ -I ./common ./day5/day5.cpp -o ./build/day5 && ./build/day5
 
 using stringVector = std::vector<std::string>;
 

@@ -7,7 +7,7 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day5/day5.cpp -o ./build/day5 && ./build/day5
+// g++ -I ./common ./day5.cpp -o ./day5 && ./build/day5
 
 using stringVector = std::vector<std::string>;
 
@@ -32,8 +32,8 @@ double squareNumber(double ip) { return ip * ip; }
 // }
 
 int main(int argc, char *argv[]) {
-  std::string path = "./day4/input_test.txt";
-  //   std::string path = "./day4/input.txt";
+  std::string path = "./input_test.txt";
+  //   std::string path = "./input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
   const double num = 5;
   std::cout << "number " << num << " squared " << squareNumber(num)

@@ -40,7 +40,7 @@ std::pair<int, int> parseIntMinusIntToPair(const std::string &str) {
 
 int main() {
   // std::string path = "./day4/input_test.txt";
-  std::string path = "./day4/input.txt";
+  std::string path = "./input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
 
   int total_score_A{0};

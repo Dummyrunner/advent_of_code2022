@@ -1,3 +1,4 @@
+// #include "catch_include.hpp"
 #include "vector_utils.hpp"
 #include <iostream>
 #include <sstream>
@@ -30,7 +31,7 @@ double squareNumber(double ip) { return ip * ip; }
 //   return res;
 // }
 
-int main() {
+int main(int argc, char *argv[]) {
   std::string path = "./day4/input_test.txt";
   //   std::string path = "./day4/input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);

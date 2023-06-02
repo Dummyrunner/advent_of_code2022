@@ -6,7 +6,7 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day3/day3.cpp -o ./build/day3 && ./build/day3
+// g++ -I ./common ./day3.cpp -o ../build/day3 && ../build/day3
 
 bool containsChar(const std::string &s, const char c) {
   size_t str_len = s.size();
@@ -70,8 +70,8 @@ std::vector<char> commonCharsOfThreeStrings(const std::string &str1,
 }
 
 int main() {
-  // std::string path = "./day3/input_test.txt";
-  std::string path = "./day3/input.txt";
+  // std::string path = "./input_test.txt";
+  std::string path = "./input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
 
   int total_score_A{0};

@@ -4,7 +4,7 @@
 #include <string>
 
 // build and run:
-// g++ -I ./common ./day2/day2.cpp -o ./build/day2 && ./build/day2
+// g++ -I ./common ./day2.cpp -o ../build/day2 && ../build/day2
 
 std::pair<char, char> splitCharPairSeparatedBy(std::string str,
                                                char separator_char) {
@@ -74,8 +74,8 @@ int rewardFromOwnMoveOpponentMove(RockPaperScissors own_move,
 
 // desired outcome for exc B: X: lose, Y: draw, Z: win
 int main() {
-  // std::string path = "./day2/input_test.txt";
-  std::string path = "./day2/input.txt";
+  // std::string path = "./input_test.txt";
+  std::string path = "./input.txt";
 
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
   int total_score_A{0};

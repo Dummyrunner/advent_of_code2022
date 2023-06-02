@@ -1,6 +1,4 @@
-#define CATCH_CONFIG_MAIN // This tells Catch to provide a main() - only do this
-                          // in one cpp file
-#include "catch.hpp"
+#include "../day5.cpp"
 
 TEST_CASE("squares is computed", "[squaredNumber]") {
   REQUIRE(squaredNumber(0.) == 0);

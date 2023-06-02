@@ -7,7 +7,7 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day4/day4.cpp -o ./build/day4 && ./build/day4
+// g++ -I ./common ./day4.cpp -o ../build/day4 && ../build/day4
 
 std::vector<std::string> splitStringAtChar(const std::string &str,
                                            char separator) {
@@ -39,7 +39,7 @@ std::pair<int, int> parseIntMinusIntToPair(const std::string &str) {
 // }
 
 int main() {
-  // std::string path = "./day4/input_test.txt";
+  // std::string path = "./input_test.txt";
   std::string path = "./input.txt";
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
 

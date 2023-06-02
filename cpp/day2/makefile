@@ -1,5 +1,5 @@
-EXE = ../build/day4
-OBJS = day4.o
+EXE = ../build/day2
+OBJS = day2.o
 CLEAN_RM =
 
 include ../generic.mk

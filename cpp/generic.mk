@@ -14,13 +14,13 @@
 # Compiler/linker config and object/depfile directory:
 CXX = g++
 LD  = g++
-OBJS_DIR = .objs
+OBJS_DIR = ./build/.objs
 
 # -MMD and -MP asks clang++ to generate a .d file listing the headers used in the source code for use in the Make process.
 #   -MMD: "Write a depfile containing user headers"
 #   -MP : "Create phony target for each dependency (other than main file)"
 #   (https://clang.llvm.org/docs/ClangCommandLineReference.html)
-DEPFILE_FLAGS = -MMD -MP -I ./common/vector_utils.hpp
+DEPFILE_FLAGS = -MMD -MP -I ../common
 
 # Provide lots of helpful warning/errors:
 # (Switching from clang++ to g++ caused some trouble here. Not all flags are identically between the compilers.)
@@ -48,22 +48,22 @@ all: $(EXE)
 # - $(EXE) depends on all object files in $(OBJS)
 # - `patsubst` function adds the directory name $(OBJS_DIR) before every object file
 $(EXE): $(patsubst %.o, $(OBJS_DIR)/%.o, $(OBJS))
-	$(LD) $^ $(LDFLAGS) -o $@
+	$(LD) ../$^ $(LDFLAGS) -o $@
 
 # Ensure .objs/ exists:
 $(OBJS_DIR):
-	# @mkdir -p $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)
 	# @mkdir -p $(OBJS_DIR)/uiuc
 
 # Rules for compiling source code.
 # - Every object file is required by $(EXE)
 # - Generates the rule requiring the .cpp file of the same name
 $(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o ../$@
 
 # Additional dependencies for object files are included in the clang++
-# generated .d files (from $(DEPFILE_FLAGS)):
-# -include $(OBJS_DIR)/*.d
+generated .d files (from $(DEPFILE_FLAGS)):
+-include $(OBJS_DIR)/*.d
 # -include $(OBJS_DIR)/uiuc/*.d
 
 

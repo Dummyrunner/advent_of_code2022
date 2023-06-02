@@ -36,7 +36,7 @@
 # day5: day5.cpp
 # 	cpp day5.cpp -o ../build/day5
 
-EXE = day4
+EXE = ../build/day4
 OBJS = day4.o
 CLEAN_RM =
 

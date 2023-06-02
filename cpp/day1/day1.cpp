@@ -4,11 +4,11 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day1/day1.cpp -o ./build/day1 && ./build/day1
+// g++ -I ../common ./day1.cpp -o ../build/day1 && ../build/day1
 
 int main() {
-  // string path = "./day1/input_test.txt";
-  std::string path = "./day1/input.txt";
+  // string path = "./input_test.txt";
+  std::string path = "./input.txt";
 
   std::vector<std::string> lines = utils::extractFileToLineVector(path);
   // append empty string to get last entry processed
@@ -18,7 +18,7 @@ int main() {
 
   int current_sum{0};
 
-  for (int i = 0; i < lines.size(); ++i) {
+  for (unsigned int i = 0; i < lines.size(); ++i) {
     std::string current_line = lines[i];
     if (current_line == "") {
       sums.push_back(current_sum);

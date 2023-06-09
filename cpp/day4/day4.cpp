@@ -7,7 +7,7 @@
 #include <vector>
 
 // build and run:
-// g++ -I ./common ./day4.cpp -o ../build/day4 && ../build/day4
+// make clean && make && ../build/day4
 
 std::vector<std::string> splitStringAtChar(const std::string &str,
                                            char separator) {
@@ -27,16 +27,6 @@ std::pair<int, int> parseIntMinusIntToPair(const std::string &str) {
   res.second = stoi(nums_as_string_vec[1]);
   return res;
 }
-
-// std::vector<Interval> parseLineToIntervalVector(std::string &line) {
-//   std::vector<Interval> res(2);
-//   auto vec_of_substrings = splitStringAtChar(line, ',');
-//   auto boundary_pair1 = parseIntMinusIntToPair(vec_of_substrings.first);
-//   auto boundary_pair2 = parseIntMinusIntToPair(vec_of_substrings.second);
-//   res[0] = Interval(boundary_pair1.first, boundary_pair1.second);
-//   res[1] = Interval(boundary_pair2.first, boundary_pair2.second);
-//   // vec_of_substrings[0];
-// }
 
 int main() {
   // std::string path = "./input_test.txt";

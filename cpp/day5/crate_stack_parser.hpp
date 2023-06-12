@@ -9,10 +9,10 @@ using stringVector = std::vector<std::string>;
 
 struct MoveDirective {
 public:
-  MoveDirective(int aim, int origin, int amount)
-      : aim{aim}, origin{origin}, amount{amount} {}
+  MoveDirective(int target, int origin, int amount)
+      : target{target}, origin{origin}, amount{amount} {}
 
-  int aim{};
+  int target{};
   int origin{};
   int amount{};
 };
@@ -58,8 +58,14 @@ public:
 
   MoveDirective moveDirectiveFromInputLine(std::string str) {
     dropFirstNCharsOfString(str, 5);
-    int amount{str[0]};
-    MoveDirective res = MoveDirective(0, 0, amount);
+    int amount{charAsInt(str[0])};
+    dropFirstNCharsOfString(str, 7);
+    int origin{charAsInt(str[0])};
+    dropFirstNCharsOfString(str, 5);
+    int target{charAsInt(str[0])};
+
+    MoveDirective res = MoveDirective(target, origin, amount);
+    return res;
   }
 
 private:

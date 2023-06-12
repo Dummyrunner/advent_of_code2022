@@ -1,4 +1,5 @@
 // #include "catch_include.hpp"
+#include "crate_stack_collection.hpp"
 #include "crate_stack_parser.hpp"
 #include "vector_utils.hpp"
 #include <iostream>
@@ -13,28 +14,6 @@
 // make clean && make && ../build/day5
 
 using stringVector = std::vector<std::string>;
-
-// struct MoveDirective {
-// public:
-//   MoveDirective(int target, int origin, int amount)
-//       : target{target}, origin{origin}, amount{amount} {}
-
-//   int target{};
-//   int origin{};
-//   int amount{};
-// };
-
-class Crate {
-public:
-  Crate(int ip) : val{ip} {}
-  void setVal(int ip) { val = ip; }
-  int getVal() { return val; };
-
-private:
-  int val{0};
-};
-
-using crateStack = std::vector<std::stack<Crate>>;
 
 int main() {
   std::string path = "./input_test.txt";

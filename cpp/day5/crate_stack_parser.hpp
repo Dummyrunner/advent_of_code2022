@@ -1,21 +1,11 @@
 #pragma once
 
+#include "crate_stack_collection.hpp"
 #include "vector_utils.hpp"
 #include <regex>
 #include <string>
 #include <vector>
-
 using stringVector = std::vector<std::string>;
-
-struct MoveDirective {
-public:
-  MoveDirective(int target, int origin, int amount)
-      : target{target}, origin{origin}, amount{amount} {}
-
-  int target{};
-  int origin{};
-  int amount{};
-};
 
 class CrateStackParser {
 public:

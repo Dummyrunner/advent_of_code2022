@@ -14,18 +14,15 @@
 
 using stringVector = std::vector<std::string>;
 
-class MoveDirective {
-  MoveDirective(int aim, int origin, int amount)
-      : m_aim{aim}, m_origin{origin}, m_amount{amount} {}
+// struct MoveDirective {
+// public:
+//   MoveDirective(int aim, int origin, int amount)
+//       : aim{aim}, origin{origin}, amount{amount} {}
 
-  int m_aim{};
-  int m_origin{};
-  int m_amount{};
-
-  int getAim() { return m_aim; }
-  int getOrigin() { return m_origin; }
-  int getAmount() { return m_amount; }
-};
+//   int aim{};
+//   int origin{};
+//   int amount{};
+// };
 
 class Crate {
 public:
@@ -57,6 +54,19 @@ int main() {
   parser.prepareInitStateInput();
   auto x = parser.getPreprocessedInputStateVector();
   utils::printAllVectorEntries(x);
+  std::string teststr{"move 1 from 2 to 1"};
+  // std::cout << "before drop: #" << teststr << std::endl;
+  // parser.dropFirstNCharsOfString(teststr, 5);
+  // std::cout << "after drop: #" << teststr << std::endl;
+  // auto first_num_in_line{teststr[0]};
+  // std::cout << "first char of string: " << first_num_in_line << std::endl;
+  // std::cout << "test calculation (1): " <<
+  // parser.charAsInt(first_num_in_line)
+  //           << std::endl;
+  auto movedirective = parser.moveDirectiveFromInputLine(teststr);
+  std::cout << movedirective.amount << std::endl;
+  std::cout << movedirective.aim << std::endl;
+  std::cout << movedirective.origin << std::endl;
 
   // //   std::cout << "EXC 4A:\t" << total_score_A << std::endl;
   // //   std::cout << "EXC 4B:\t" << total_score_B << std::endl;

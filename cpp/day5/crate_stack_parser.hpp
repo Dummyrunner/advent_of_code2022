@@ -7,6 +7,16 @@
 
 using stringVector = std::vector<std::string>;
 
+struct MoveDirective {
+public:
+  MoveDirective(int aim, int origin, int amount)
+      : aim{aim}, origin{origin}, amount{amount} {}
+
+  int aim{};
+  int origin{};
+  int amount{};
+};
+
 class CrateStackParser {
 public:
   CrateStackParser(std::string path, const std::string empty_crate_char = "_")
@@ -36,6 +46,21 @@ public:
   }
 
   std::string getEmptyCrateChar() { return m_empty_crate_char; }
+
+  void dropFirstNCharsOfString(std::string &str, int n) {
+    str.replace(str.begin(), str.begin() + n, "");
+  }
+
+  int charAsInt(char c) {
+    int res = c - '0';
+    return res;
+  }
+
+  MoveDirective moveDirectiveFromInputLine(std::string str) {
+    dropFirstNCharsOfString(str, 5);
+    int amount{str[0]};
+    MoveDirective res = MoveDirective(0, 0, amount);
+  }
 
 private:
   std::vector<stringVector> splitStringVectorAtEmptyLine(stringVector str_vec) {

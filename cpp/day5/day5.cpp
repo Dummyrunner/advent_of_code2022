@@ -44,6 +44,7 @@ int main() {
   CrateStackCollection x = CrateStackCollection(preprocessedInitStateStringVec);
 
   std::cout << "num of stacks: " << x.numOfStacks() << std::endl;
+  x.moveTopFromStackToStack(0, 2, 2);
   std::cout << "top val of stack 0 " << x.peekTopVal(0) << std::endl;
   std::cout << "top val of stack 1 " << x.peekTopVal(1) << std::endl;
   std::cout << "top val of stack 2 " << x.peekTopVal(2) << std::endl;

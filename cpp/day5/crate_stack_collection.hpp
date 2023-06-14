@@ -115,8 +115,8 @@ public:
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }
-    std::cout << "move origin: " << origin << ", target: " << target
-              << ", amount: " << amount << std::endl;
+    // std::cout << "move origin: " << origin << ", target: " << target
+    //           << ", amount: " << amount << std::endl;
     auto operating_crate = crateStack();
     for (int i{0}; i < amount; ++i) {
       auto val{peekTopVal(origin)};
@@ -128,13 +128,14 @@ public:
       pushToStack(val, target);
       operating_crate.pop();
     }
-    printTopCrates();
   }
 
   void moveOneByOne(const int &origin, const int &target, const int &amount) {
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }
+    // std::cout << "move origin: " << origin << ", target: " << target
+    //           << ", amount: " << amount << std::endl;
     for (int i{0}; i < amount; ++i) {
       moveSingleCrate(origin, target);
     }
@@ -145,14 +146,13 @@ public:
       throwAtStackIndexOutOfRange();
     }
     auto val{peekTopVal(origin)};
-    pushToStack(val, origin);
+    pushToStack(val, target);
     removeTopCrate(origin);
   }
 
   void printTopCrates() {
     for (int i{0}; i < numOfStacks(); ++i) {
-      std::cout << "top val of stack " << i << ": " << peekTopVal(i)
-                << std::endl;
+      std::cout << peekTopVal(i);
     }
   }
 
@@ -162,14 +162,10 @@ private:
   }
 
   void throwAtStackIndexOutOfRange() {
-    // std::ostream os;
-    // os << "INDEX ERROR: index " << stack_idx << " out of range!\n";
     throw std::out_of_range("Index out of range:");
   }
 
   void throwAtStackIndexOutOfRange(int idx) {
-    // std::ostream os;
-    // os << "INDEX ERROR: index " << stack_idx << " out of range!\n";
     throw std::out_of_range("Index out of range " + std::to_string(idx));
   }
 

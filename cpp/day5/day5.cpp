@@ -14,8 +14,8 @@
 // make clean && make && ../build/day5
 
 int main() {
-  std::string path = "./input_test.txt";
-  //   std::string path = "./input.txt";
+  // std::string path = "./input_test.txt";
+  std::string path = "./input.txt";
 
   int total_score_A{0};
   int total_score_B{0};
@@ -32,32 +32,14 @@ int main() {
       parser.getPreprocessedInputStateVector();
   utils::printAllVectorEntries(preprocessedInitStateStringVec);
 
-  // Parse move input
-  // std::string teststr{"move 1 from 2 to 1"};
-  // auto movedirective = parser.createMoveDirectiveFromInputLine(teststr);
-  // std::cout << "amount: " << movedirective.amount << std::endl;
-  // std::cout << "target: " << movedirective.target << std::endl;
-  // std::cout << "origin: " << movedirective.origin << std::endl;
-
   CrateStackCollection x = CrateStackCollection(preprocessedInitStateStringVec);
-
-  // std::cout << "num of stacks: " << x.numOfStacks() << std::endl;
-
-  // x.moveTopFromStackToStack(0, 2, 2);
-
-  // std::cout << "top val of stack 0 " << x.peekTopVal(0) << std::endl;
-  // std::cout << "top val of stack 1 " << x.peekTopVal(1) << std::endl;
-  // std::cout << "top val of stack 2 " << x.peekTopVal(2) << std::endl;
-  std::cout << "-------------------------------" << std::endl;
   auto moveDirectivesVector{parser.getMoveDirectivesVector()};
-  // std::cout << "move directives size " << moveDirectivesVector.size()
-  // << std::endl;
   for (int i = 0; i < moveDirectivesVector.size(); ++i) {
-    // std::cout << "blubber - --------" << i << std::endl;
     x.moveOneByOne(moveDirectivesVector[i]);
   }
-
+  std::cout << "----------------------------------" << std::endl;
   x.printTopCrates();
+  std::cout << std::endl;
   // //   std::cout << "EXC 4A:\t" << total_score_A << std::endl;
   // //   std::cout << "EXC 4B:\t" << total_score_B << std::endl;
 }

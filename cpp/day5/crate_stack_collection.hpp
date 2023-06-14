@@ -100,12 +100,16 @@ public:
     Crate next_crate = Crate(val);
     m_stacks[stack_idx]->push(next_crate);
   }
-  void moveTopFromStackToStack(const MoveDirective &move) {
-    moveTopFromStackToStack(move.origin, move.target, move.amount);
+  void moveWholeSubstack(const MoveDirective &move) {
+    moveWholeSubstack(move.origin, move.target, move.amount);
   }
 
-  void moveTopFromStackToStack(const int &origin, const int &target,
-                               const int &amount) {
+  void moveOneByOne(const MoveDirective &move) {
+    moveOneByOne(move.origin, move.target, move.amount);
+  }
+
+  void moveWholeSubstack(const int &origin, const int &target,
+                         const int &amount) {
     // understood rules wrong: crates should be moved one by one, not as whole
     // substack
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
@@ -126,6 +130,25 @@ public:
     }
     printTopCrates();
   }
+
+  void moveOneByOne(const int &origin, const int &target, const int &amount) {
+    if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
+      throwAtStackIndexOutOfRange();
+    }
+    for (int i{0}; i < amount; ++i) {
+      moveSingleCrate(origin, target);
+    }
+  }
+
+  void moveSingleCrate(const int &origin, const int &target) {
+    if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
+      throwAtStackIndexOutOfRange();
+    }
+    auto val{peekTopVal(origin)};
+    pushToStack(val, origin);
+    removeTopCrate(origin);
+  }
+
   void printTopCrates() {
     for (int i{0}; i < numOfStacks(); ++i) {
       std::cout << "top val of stack " << i << ": " << peekTopVal(i)

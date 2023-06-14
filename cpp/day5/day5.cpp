@@ -54,7 +54,7 @@ int main() {
   // << std::endl;
   for (int i = 0; i < moveDirectivesVector.size(); ++i) {
     // std::cout << "blubber - --------" << i << std::endl;
-    x.moveTopFromStackToStack(moveDirectivesVector[i]);
+    x.moveOneByOne(moveDirectivesVector[i]);
   }
 
   x.printTopCrates();

@@ -5,6 +5,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+
 using stringVector = std::vector<std::string>;
 
 class CrateStackParser {
@@ -29,6 +30,7 @@ public:
       removeBracketsFromString(line);
     }
     m_preprocessed_input_state_vector = init_state_input_lines;
+    m_raw_move_vector = two_input_sections[1];
   }
 
   stringVector getPreprocessedInputStateVector() {
@@ -46,7 +48,7 @@ public:
     return res;
   }
 
-  MoveDirective moveDirectiveFromInputLine(std::string str) {
+  MoveDirective createMoveDirectiveFromInputLine(std::string str) {
     dropFirstNCharsOfString(str, 5);
     int amount{charAsInt(str[0])};
     dropFirstNCharsOfString(str, 7);
@@ -56,6 +58,18 @@ public:
 
     MoveDirective res = MoveDirective(target, origin, amount);
     return res;
+  }
+
+  std::vector<MoveDirective> getMoveDirectivesVector() {
+    fillMoveDirectiveVector(m_raw_move_vector);
+    return m_move_directives;
+  }
+
+  void fillMoveDirectiveVector(stringVector strvec) {
+    for (int iline{0}; iline < strvec.size(); ++iline) {
+      auto next_move_directive{createMoveDirectiveFromInputLine(strvec[iline])};
+      m_move_directives.push_back(next_move_directive);
+    }
   }
 
 private:
@@ -113,6 +127,7 @@ private:
 
   std::string m_filepath_to_parse{};
   std::string m_empty_crate_char{};
+  std::vector<MoveDirective> m_move_directives{};
   stringVector m_raw_input_state_vector{};
   stringVector m_raw_move_vector{};
   stringVector m_preprocessed_input_state_vector{};

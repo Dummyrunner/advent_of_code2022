@@ -52,9 +52,9 @@ public:
     dropFirstNCharsOfString(str, 5);
     int amount{charAsInt(str[0])};
     dropFirstNCharsOfString(str, 7);
-    int origin{charAsInt(str[0])};
+    int origin{charAsInt(str[0]) - 1};
     dropFirstNCharsOfString(str, 5);
-    int target{charAsInt(str[0])};
+    int target{charAsInt(str[0]) - 1};
 
     MoveDirective res = MoveDirective(target, origin, amount);
     return res;

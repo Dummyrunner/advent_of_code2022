@@ -25,6 +25,12 @@ public:
 
     for (auto &line : init_state_input_lines) {
       replaceCharsInString(' ', '#', line);
+      // replaceCharsInString(']#', ']', line);
+      // std::cout << line << std::endl;
+      replaceCharsInString('####', '###', line);
+      // replaceCharsInString('#####', '[_]', line);
+
+      std::cout << line << std::endl;
       replaceSubstring(line, "###", "[" + m_empty_crate_char + "]");
       removeCharFromString('#', line);
       removeBracketsFromString(line);

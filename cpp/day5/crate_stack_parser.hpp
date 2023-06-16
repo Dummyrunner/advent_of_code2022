@@ -27,13 +27,13 @@ public:
       replaceCharsInString(' ', '#', line);
       // replaceCharsInString(']#', ']', line);
       // std::cout << line << std::endl;
-      replaceCharsInString('####', '###', line);
+      // replaceCharsInString('####', '###', line);
       // replaceCharsInString('#####', '[_]', line);
-
-      std::cout << line << std::endl;
+      replaceQuadrupleSharp(line);
       replaceSubstring(line, "###", "[" + m_empty_crate_char + "]");
       removeCharFromString('#', line);
       removeBracketsFromString(line);
+      std::cout << line << "\t size: " << line.size() << std::endl;
     }
     m_preprocessed_input_state_vector = init_state_input_lines;
     m_raw_move_vector = two_input_sections[1];
@@ -54,7 +54,27 @@ public:
     return res;
   }
 
+  std::vector<int> extractIntegersFromString(std::string str) {
+    std::vector<int> res{};
+    for (std::size_t i{0}; i < str.size(); ++i) {
+      auto current_char{str[i]};
+      if (std::isdigit(current_char)) {
+        int integer_length{1};
+        while (integer_length + i < str.size() &&
+               std::isdigit(str[i + integer_length])) {
+          ++integer_length;
+        }
+        auto complete_int_substring = str.substr(i, integer_length);
+        auto complete_integer = stoi(complete_int_substring);
+        res.push_back(complete_integer);
+        i += integer_length - 1;
+      }
+    }
+    return res;
+  }
+
   MoveDirective createMoveDirectiveFromInputLine(std::string str) {
+    // KEKS handle two-digits amount
     dropFirstNCharsOfString(str, 5);
     int amount{charAsInt(str[0])};
     dropFirstNCharsOfString(str, 7);
@@ -127,8 +147,22 @@ private:
 
   void replaceSubstring(std::string &str, std::string str_to_be_replaced,
                         std::string replacement_str) {
+    auto pos = str.find("###");
+    // std::cout << "found triple hashtag at pos: " << pos << std::endl;
     str = std::regex_replace(str, std::regex(str_to_be_replaced),
                              replacement_str);
+  }
+
+  void replaceQuadrupleSharp(std::string &str) {
+    std::string string_to_be_replaced{"####"};
+    std::string replacement_str{"#[_]"};
+    auto string_to_be_replaced_len{string_to_be_replaced.size()};
+    auto quadruple_hashtag_pos{str.find(string_to_be_replaced)};
+    while (quadruple_hashtag_pos != std::string::npos) {
+      str.replace(quadruple_hashtag_pos, string_to_be_replaced_len,
+                  replacement_str);
+      quadruple_hashtag_pos = str.find(string_to_be_replaced);
+    }
   }
 
   std::string m_filepath_to_parse{};

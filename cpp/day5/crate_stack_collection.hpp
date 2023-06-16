@@ -37,7 +37,10 @@ class CrateStackCollection {
 public:
   CrateStackCollection(stringVector vec, char empty_crate_char)
       : m_empty_crate_char{empty_crate_char} {
-    addNEmptyCrateStacks(vec.size());
+    auto size_of_first_line{vec[0].size()};
+    addNEmptyCrateStacks(size_of_first_line); // PROBLEM
+    std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
+              << std::endl;
     size_t vecsize{vec.size()};
     for (int iline{vecsize - 1}; iline >= 0; --iline) {
       const auto line{vec[iline]};
@@ -48,10 +51,18 @@ public:
         }
       }
     }
+    std::cout << "stack top vals of " << numOfStacks()
+              << " stacks after initialization:\n";
+
+    printTopCrates();
   }
 
   CrateStackCollection(stringVector vec) {
-    addNEmptyCrateStacks(vec.size());
+    std::cout << "++++++++++++++ first line size:  " << vec[0].size()
+              << std::endl;
+    addNEmptyCrateStacks(vec[0].size());
+    std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
+              << std::endl;
     size_t vecsize{vec.size()};
     for (int iline{vecsize - 1}; iline >= 0; --iline) {
       const auto line{vec[iline]};
@@ -95,16 +106,21 @@ public:
 
   void pushToStack(const char &val, const int &stack_idx) {
     if (!inStackIdxRange(stack_idx)) {
+      std::cerr << "push to stack\n";
       throwAtStackIndexOutOfRange(stack_idx);
     }
     Crate next_crate = Crate(val);
     m_stacks[stack_idx]->push(next_crate);
   }
   void moveWholeSubstack(const MoveDirective &move) {
+    std::cerr << "move whole substack\n";
     moveWholeSubstack(move.origin, move.target, move.amount);
   }
 
   void moveOneByOne(const MoveDirective &move) {
+    std::cerr << "move one by one\n";
+    std::cout << "move origin: " << move.origin << ", target: " << move.target
+              << ", amount: " << move.amount << std::endl;
     moveOneByOne(move.origin, move.target, move.amount);
   }
 
@@ -117,16 +133,16 @@ public:
     }
     // std::cout << "move origin: " << origin << ", target: " << target
     //           << ", amount: " << amount << std::endl;
-    auto operating_crate = crateStack();
+    auto tmp_crate = crateStack();
     for (int i{0}; i < amount; ++i) {
       auto val{peekTopVal(origin)};
-      operating_crate.push(val);
+      tmp_crate.push(val);
       removeTopCrate(origin);
     }
-    while (!operating_crate.empty()) {
-      auto val{(operating_crate.top()).getVal()};
+    while (!tmp_crate.empty()) {
+      auto val{(tmp_crate.top()).getVal()};
       pushToStack(val, target);
-      operating_crate.pop();
+      tmp_crate.pop();
     }
   }
 
@@ -134,14 +150,16 @@ public:
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }
-    // std::cout << "move origin: " << origin << ", target: " << target
-    //           << ", amount: " << amount << std::endl;
+    std::cout << "move origin: " << origin << ", target: " << target
+              << ", amount: " << amount << std::endl;
     for (int i{0}; i < amount; ++i) {
       moveSingleCrate(origin, target);
     }
   }
 
   void moveSingleCrate(const int &origin, const int &target) {
+    std::cout << "move single crate from " << origin << " to "
+              << "target\n";
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }

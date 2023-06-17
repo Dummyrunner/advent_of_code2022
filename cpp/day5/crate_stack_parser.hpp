@@ -31,7 +31,6 @@ public:
       replaceSubstring(line, "###", "[" + m_empty_crate_char + "]");
       removeCharFromString('#', line);
       removeBracketsFromString(line);
-      std::cout << line << "\t size: " << line.size() << std::endl;
     }
     m_preprocessed_input_state_vector = init_state_input_lines;
     m_raw_move_vector = two_input_sections[1];
@@ -83,7 +82,8 @@ public:
 
 private:
   void fillMoveDirectiveVector(stringVector strvec) {
-    for (int iline{0}; iline < strvec.size(); ++iline) {
+    for (std::vector<std::string>::size_type iline{0}; iline < strvec.size();
+         ++iline) {
       auto next_move_directive{createMoveDirectiveFromInputLine(strvec[iline])};
       m_move_directives.push_back(next_move_directive);
     }
@@ -113,7 +113,7 @@ private:
 
   void replaceCharsInString(const char &old_char, const char &new_char,
                             std::string &str) {
-    for (int i{0}; i < str.size(); ++i) {
+    for (std::string::size_type i{0}; i < str.size(); ++i) {
       if (str[i] == old_char) {
         str[i] = new_char;
       }
@@ -131,7 +131,6 @@ private:
 
   void replaceSubstring(std::string &str, const std::string &str_to_be_replaced,
                         const std::string &replacement_str) {
-    auto pos = str.find("###");
     str = std::regex_replace(str, std::regex(str_to_be_replaced),
                              replacement_str);
   }

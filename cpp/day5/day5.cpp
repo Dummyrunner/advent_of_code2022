@@ -35,28 +35,25 @@ int main() {
   parser.prepareInitStateInput();
   auto preprocessedInitStateStringVec =
       parser.getPreprocessedInputStateVector();
-  utils::printAllVectorEntries(preprocessedInitStateStringVec);
 
   CrateStackCollection cscA =
       CrateStackCollection(preprocessedInitStateStringVec);
-  auto moveDirectivesVectorA{parser.getMoveDirectivesVector()};
+  auto moveDirectivesVector{parser.getMoveDirectivesVector()};
 
-  for (int i = 0; i < moveDirectivesVectorA.size(); ++i) {
-    cscA.moveOneByOne(moveDirectivesVectorA[i]);
+  for (std::vector<MoveDirective>::size_type i = 0;
+       i < moveDirectivesVector.size(); ++i) {
+    cscA.moveOneByOne(moveDirectivesVector[i]);
   }
 
-  // CrateStackCollection cscB =
-  //     CrateStackCollection(preprocessedInitStateStringVec);
-  // auto moveDirectivesVectorB{parser.getMoveDirectivesVector()};
+  CrateStackCollection cscB =
+      CrateStackCollection(preprocessedInitStateStringVec);
+  for (std::vector<MoveDirective>::size_type i = 0;
+       i < moveDirectivesVector.size(); ++i) {
+    cscB.moveWholeSubstack(moveDirectivesVector[i]);
+  }
 
-  // for (int i = 0; i < moveDirectivesVectorB.size(); ++i) {
-  //   cscB.moveOneByOne(moveDirectivesVectorB[i]);
-  // }
-
-  std::cout << std::endl;
   final_tops_A = cscA.topCratesToString();
-  // final_tops_B = cscB.topCratesToString();
-  cscA.printTopCrates();
+  final_tops_B = cscB.topCratesToString();
 
   std::cout << "EXC 4A:\t" << final_tops_A << std::endl;
   std::cout << "EXC 4B:\t" << final_tops_B << std::endl;

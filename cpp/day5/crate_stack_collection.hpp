@@ -18,9 +18,9 @@ public:
     addNEmptyCrateStacks(size_of_first_line);
 
     size_t vecsize{vec.size()};
-    for (int iline{vecsize - 1}; iline >= 0; --iline) {
+    for (int iline{(int)vecsize - 1}; iline >= 0; --iline) {
       const auto line{vec[iline]};
-      for (int ichar{0}; ichar < line.size(); ++ichar) {
+      for (std::string::size_type ichar{0}; ichar < line.size(); ++ichar) {
         if (line[ichar] != m_empty_crate_char) {
           char val_to_push{line[ichar]};
           pushToStack(val_to_push, ichar);

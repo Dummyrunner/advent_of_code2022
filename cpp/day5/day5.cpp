@@ -13,26 +13,23 @@
 // build and run
 // make clean && make && ../build/day5
 
+// class SolverDay5 {
+// public:
+//   std::string solveA() {}
+
+// private:
+//   CrateStackParser parser;
+//   std::unique_ptr<CrateStackCollection> cscA = nullptr;
+// };
+
 int main() {
   // std::string path = "./input_test.txt";
   std::string path = "./input.txt";
 
-  int total_score_A{0};
-  int total_score_B{0};
+  std::string final_tops_A{};
+  std::string final_tops_B{};
 
   CrateStackParser parser = CrateStackParser(path);
-  std::string teststr{"move 10 from 6 to 8"};
-  std::string teststr2{"move 1 from 6 to 8"};
-
-  auto extracted_ints_vec = parser.extractIntegersFromString(teststr);
-  std::cout << "--------------------------------" << std::endl;
-  utils::printAllVectorEntries(extracted_ints_vec);
-  std::cout << "--------------------------------" << std::endl;
-
-  auto extracted_ints_vec2 = parser.extractIntegersFromString(teststr2);
-  std::cout << "--------------------------------" << std::endl;
-  utils::printAllVectorEntries(extracted_ints_vec2);
-  std::cout << "--------------------------------" << std::endl;
 
   // Parse init state input
   parser.prepareInitStateInput();
@@ -40,22 +37,27 @@ int main() {
       parser.getPreprocessedInputStateVector();
   utils::printAllVectorEntries(preprocessedInitStateStringVec);
 
-  CrateStackCollection x = CrateStackCollection(preprocessedInitStateStringVec);
-  auto moveDirectivesVector{parser.getMoveDirectivesVector()};
-  int idir{0};
-  for (auto move_directive : moveDirectivesVector) {
-    std::cout << idir << "  move directive: (" << move_directive.origin << ","
-              << move_directive.target << "," << move_directive.amount
-              << ")  \n";
-    ++idir;
-  }
-  for (int i = 0; i < moveDirectivesVector.size(); ++i) {
-    x.moveOneByOne(moveDirectivesVector[i]);
+  CrateStackCollection cscA =
+      CrateStackCollection(preprocessedInitStateStringVec);
+  auto moveDirectivesVectorA{parser.getMoveDirectivesVector()};
+
+  for (int i = 0; i < moveDirectivesVectorA.size(); ++i) {
+    cscA.moveOneByOne(moveDirectivesVectorA[i]);
   }
 
-  std::cout << "----------------------------------" << std::endl;
-  x.printTopCrates();
+  // CrateStackCollection cscB =
+  //     CrateStackCollection(preprocessedInitStateStringVec);
+  // auto moveDirectivesVectorB{parser.getMoveDirectivesVector()};
+
+  // for (int i = 0; i < moveDirectivesVectorB.size(); ++i) {
+  //   cscB.moveOneByOne(moveDirectivesVectorB[i]);
+  // }
+
   std::cout << std::endl;
-  // //   std::cout << "EXC 4A:\t" << total_score_A << std::endl;
-  // //   std::cout << "EXC 4B:\t" << total_score_B << std::endl;
+  final_tops_A = cscA.topCratesToString();
+  // final_tops_B = cscB.topCratesToString();
+  cscA.printTopCrates();
+
+  std::cout << "EXC 4A:\t" << final_tops_A << std::endl;
+  std::cout << "EXC 4B:\t" << final_tops_B << std::endl;
 }

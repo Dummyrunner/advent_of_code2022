@@ -1,5 +1,5 @@
 #pragma once
-
+#include "helper_classes.hpp"
 #include "vector_utils.hpp"
 #include <iostream>
 #include <memory>
@@ -10,59 +10,13 @@
 
 using stringVector = std::vector<std::string>;
 
-class Crate {
-public:
-  Crate(char ip) : val{ip} {}
-  void setVal(char ip) { val = ip; }
-  char getVal() { return val; };
-
-private:
-  char val{0};
-};
-
-using crateStack = std::stack<Crate>;
-using crateStackPtr = std::unique_ptr<crateStack>;
-
-struct MoveDirective {
-public:
-  MoveDirective(int target, int origin, int amount)
-      : target{target}, origin{origin}, amount{amount} {}
-
-  int target{};
-  int origin{};
-  int amount{};
-};
-
 class CrateStackCollection {
 public:
-  CrateStackCollection(stringVector vec, char empty_crate_char)
+  CrateStackCollection(stringVector vec, char empty_crate_char = '_')
       : m_empty_crate_char{empty_crate_char} {
     auto size_of_first_line{vec[0].size()};
-    addNEmptyCrateStacks(size_of_first_line); // PROBLEM
-    std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
-              << std::endl;
-    size_t vecsize{vec.size()};
-    for (int iline{vecsize - 1}; iline >= 0; --iline) {
-      const auto line{vec[iline]};
-      for (int ichar{0}; ichar < line.size(); ++ichar) {
-        if (line[ichar] != m_empty_crate_char) {
-          char val_to_push{line[ichar]};
-          pushToStack(val_to_push, ichar);
-        }
-      }
-    }
-    std::cout << "stack top vals of " << numOfStacks()
-              << " stacks after initialization:\n";
+    addNEmptyCrateStacks(size_of_first_line);
 
-    printTopCrates();
-  }
-
-  CrateStackCollection(stringVector vec) {
-    std::cout << "++++++++++++++ first line size:  " << vec[0].size()
-              << std::endl;
-    addNEmptyCrateStacks(vec[0].size());
-    std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
-              << std::endl;
     size_t vecsize{vec.size()};
     for (int iline{vecsize - 1}; iline >= 0; --iline) {
       const auto line{vec[iline]};
@@ -75,10 +29,50 @@ public:
     }
   }
 
-  void addEmptyCrateStack() {
-    auto new_stack = std::make_unique<crateStack>();
-    m_stacks.push_back(std::move(new_stack));
-  }
+  // CrateStackCollection(CrateStackParser &parser) {
+  //   setupEmptyInitStateFromParser(parser);
+  //   fillInitStateFromParser(parser);
+  // }
+
+  // void setupEmptyInitStateFromParser(CrateStackParser &parser) {
+  //   auto vec = parser.getPreprocessedInputStateVector();
+  //   // size_t vecsize{vec.size()};
+  //   auto size_of_first_line{vec[0].size()};
+  //   addNEmptyCrateStacks(size_of_first_line);
+  // }
+
+  // void fillInitStateFromParser(CrateStackParser &parser) {
+  //   auto vec = parser.getPreprocessedInputStateVector();
+  //   size_t vecsize{vec.size()};
+  //   size_t vecsize{vec.size()};
+  //   for (int iline{vecsize - 1}; iline >= 0; --iline) {
+  //     const auto line{vec[iline]};
+  //     for (int ichar{0}; ichar < line.size(); ++ichar) {
+  //       if (line[ichar] != m_empty_crate_char) {
+  //         char val_to_push{line[ichar]};
+  //         pushToStack(val_to_push, ichar);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // CrateStackCollection(stringVector vec) {
+  //   std::cout << "++++++++++++++ first line size:  " << vec[0].size()
+  //             << std::endl;
+  //   addNEmptyCrateStacks(vec[0].size());
+  //   std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
+  //             << std::endl;
+  //   size_t vecsize{vec.size()};
+  //   for (int iline{vecsize - 1}; iline >= 0; --iline) {
+  //     const auto line{vec[iline]};
+  //     for (int ichar{0}; ichar < line.size(); ++ichar) {
+  //       if (line[ichar] != m_empty_crate_char) {
+  //         char val_to_push{line[ichar]};
+  //         pushToStack(val_to_push, ichar);
+  //       }
+  //     }
+  //   }
+  // }
 
   void addNEmptyCrateStacks(int n) {
     for (int i{0}; i < n; ++i) {
@@ -106,33 +100,24 @@ public:
 
   void pushToStack(const char &val, const int &stack_idx) {
     if (!inStackIdxRange(stack_idx)) {
-      std::cerr << "push to stack\n";
       throwAtStackIndexOutOfRange(stack_idx);
     }
     Crate next_crate = Crate(val);
     m_stacks[stack_idx]->push(next_crate);
   }
   void moveWholeSubstack(const MoveDirective &move) {
-    std::cerr << "move whole substack\n";
     moveWholeSubstack(move.origin, move.target, move.amount);
   }
 
   void moveOneByOne(const MoveDirective &move) {
-    std::cerr << "move one by one\n";
-    std::cout << "move origin: " << move.origin << ", target: " << move.target
-              << ", amount: " << move.amount << std::endl;
     moveOneByOne(move.origin, move.target, move.amount);
   }
 
   void moveWholeSubstack(const int &origin, const int &target,
                          const int &amount) {
-    // understood rules wrong: crates should be moved one by one, not as whole
-    // substack
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }
-    // std::cout << "move origin: " << origin << ", target: " << target
-    //           << ", amount: " << amount << std::endl;
     auto tmp_crate = crateStack();
     for (int i{0}; i < amount; ++i) {
       auto val{peekTopVal(origin)};
@@ -150,22 +135,9 @@ public:
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
     }
-    std::cout << "move origin: " << origin << ", target: " << target
-              << ", amount: " << amount << std::endl;
     for (int i{0}; i < amount; ++i) {
       moveSingleCrate(origin, target);
     }
-  }
-
-  void moveSingleCrate(const int &origin, const int &target) {
-    std::cout << "move single crate from " << origin << " to "
-              << "target\n";
-    if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
-      throwAtStackIndexOutOfRange();
-    }
-    auto val{peekTopVal(origin)};
-    pushToStack(val, target);
-    removeTopCrate(origin);
   }
 
   void printTopCrates() {
@@ -174,7 +146,28 @@ public:
     }
   }
 
+  std::string topCratesToString() {
+    std::string str{};
+    for (int i{0}; i < numOfStacks(); ++i) {
+      str += peekTopVal(i);
+    }
+    return str;
+  }
+
 private:
+  void addEmptyCrateStack() {
+    auto new_stack = std::make_unique<crateStack>();
+    m_stacks.push_back(std::move(new_stack));
+  }
+
+  void moveSingleCrate(const int &origin, const int &target) {
+    if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
+      throwAtStackIndexOutOfRange();
+    }
+    auto val{peekTopVal(origin)};
+    pushToStack(val, target);
+    removeTopCrate(origin);
+  }
   bool inStackIdxRange(const int &n) const {
     return !((n < 0) || (n >= numOfStacks()));
   }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "crate_stack_collection.hpp"
+#include "helper_classes.hpp"
 #include "vector_utils.hpp"
 #include <regex>
 #include <string>
@@ -10,7 +11,8 @@ using stringVector = std::vector<std::string>;
 
 class CrateStackParser {
 public:
-  CrateStackParser(std::string path, const std::string empty_crate_char = "_")
+  CrateStackParser(const std::string &path,
+                   const std::string &empty_crate_char = "_")
       : m_filepath_to_parse{path}, m_empty_crate_char{empty_crate_char} {}
 
   void prepareInitStateInput() {
@@ -25,10 +27,6 @@ public:
 
     for (auto &line : init_state_input_lines) {
       replaceCharsInString(' ', '#', line);
-      // replaceCharsInString(']#', ']', line);
-      // std::cout << line << std::endl;
-      // replaceCharsInString('####', '###', line);
-      // replaceCharsInString('#####', '[_]', line);
       replaceQuadrupleSharp(line);
       replaceSubstring(line, "###", "[" + m_empty_crate_char + "]");
       removeCharFromString('#', line);
@@ -39,22 +37,15 @@ public:
     m_raw_move_vector = two_input_sections[1];
   }
 
-  stringVector getPreprocessedInputStateVector() {
+  stringVector getPreprocessedInputStateVector() const {
     return m_preprocessed_input_state_vector;
   }
-
-  std::string getEmptyCrateChar() { return m_empty_crate_char; }
 
   void dropFirstNCharsOfString(std::string &str, int n) {
     str.replace(str.begin(), str.begin() + n, "");
   }
 
-  int charAsInt(char c) {
-    int res = c - '0';
-    return res;
-  }
-
-  std::vector<int> extractIntegersFromString(std::string str) {
+  std::vector<int> extractIntegersFromString(const std::string &str) const {
     std::vector<int> res{};
     for (std::size_t i{0}; i < str.size(); ++i) {
       auto current_char{str[i]};
@@ -73,14 +64,13 @@ public:
     return res;
   }
 
-  MoveDirective createMoveDirectiveFromInputLine(std::string str) {
-    // KEKS handle two-digits amount
-    dropFirstNCharsOfString(str, 5);
-    int amount{charAsInt(str[0])};
-    dropFirstNCharsOfString(str, 7);
-    int origin{charAsInt(str[0]) - 1};
-    dropFirstNCharsOfString(str, 5);
-    int target{charAsInt(str[0]) - 1};
+  MoveDirective createMoveDirectiveFromInputLine(const std::string &str) {
+    auto integer_vec{extractIntegersFromString(str)};
+    int amount = integer_vec[0];
+    // textual move input starts counting stacks at 1
+    // crate_stack_collection starts counting stacks at 0
+    int origin = integer_vec[1] - 1;
+    int target = integer_vec[2] - 1;
 
     MoveDirective res = MoveDirective(target, origin, amount);
     return res;
@@ -91,6 +81,7 @@ public:
     return m_move_directives;
   }
 
+private:
   void fillMoveDirectiveVector(stringVector strvec) {
     for (int iline{0}; iline < strvec.size(); ++iline) {
       auto next_move_directive{createMoveDirectiveFromInputLine(strvec[iline])};
@@ -98,8 +89,13 @@ public:
     }
   }
 
-private:
-  std::vector<stringVector> splitStringVectorAtEmptyLine(stringVector str_vec) {
+  int charAsInt(const char c) {
+    int res = c - '0';
+    return res;
+  }
+
+  std::vector<stringVector>
+  splitStringVectorAtEmptyLine(const stringVector &str_vec) const {
     std::vector<stringVector> res;
     stringVector current_vec_to_fill;
     for (size_t i{0}; i < str_vec.size(); ++i) {
@@ -115,7 +111,8 @@ private:
     return res;
   }
 
-  void replaceCharsInString(char old_char, char new_char, std::string &str) {
+  void replaceCharsInString(const char &old_char, const char &new_char,
+                            std::string &str) {
     for (int i{0}; i < str.size(); ++i) {
       if (str[i] == old_char) {
         str[i] = new_char;
@@ -123,7 +120,7 @@ private:
     }
   }
 
-  void removeCharFromString(char char_to_remove, std::string &str) {
+  void removeCharFromString(const char &char_to_remove, std::string &str) {
     str.erase(std::remove(str.begin(), str.end(), char_to_remove), str.end());
   }
 
@@ -132,27 +129,15 @@ private:
     removeCharFromString(']', str);
   }
 
-  int maximalDigitInString(std::string &str) {
-    // Ugly af. how to convert char to corresponding int val??
-    int current_max{0};
-    for (int i{0}; i < str.size(); ++i) {
-      char current_char = str[i];
-      if (std::isdigit(current_char)) {
-        current_max = current_max < current_char ? current_char : current_max;
-      }
-    }
-    current_max -= 48;
-    return current_max;
-  }
-
-  void replaceSubstring(std::string &str, std::string str_to_be_replaced,
-                        std::string replacement_str) {
+  void replaceSubstring(std::string &str, const std::string &str_to_be_replaced,
+                        const std::string &replacement_str) {
     auto pos = str.find("###");
-    // std::cout << "found triple hashtag at pos: " << pos << std::endl;
     str = std::regex_replace(str, std::regex(str_to_be_replaced),
                              replacement_str);
   }
 
+  /// @brief replace all occurences of "####" in str with "#[_]"
+  /// @param str string to process
   void replaceQuadrupleSharp(std::string &str) {
     std::string string_to_be_replaced{"####"};
     std::string replacement_str{"#[_]"};

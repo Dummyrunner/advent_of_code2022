@@ -3,10 +3,6 @@
 #include "crate_stack_parser.hpp"
 #include "vector_utils.hpp"
 #include <iostream>
-#include <regex>
-#include <sstream>
-#include <stack>
-#include <stdio.h>
 #include <string>
 #include <vector>
 
@@ -31,7 +27,6 @@ int main() {
 
   CrateStackParser parser = CrateStackParser(path);
 
-  // Parse init state input
   parser.prepareInitStateInput();
   auto preprocessedInitStateStringVec =
       parser.getPreprocessedInputStateVector();

@@ -1,4 +1,5 @@
 #pragma once
+#include "crate_stack_parser.hpp"
 #include "helper_classes.hpp"
 #include "vector_utils.hpp"
 #include <iostream>
@@ -12,11 +13,25 @@ using stringVector = std::vector<std::string>;
 
 class CrateStackCollection {
 public:
+  CrateStackCollection() = default;
   CrateStackCollection(stringVector vec, char empty_crate_char = '_')
       : m_empty_crate_char{empty_crate_char} {
     auto size_of_first_line{vec[0].size()};
     addNEmptyCrateStacks(size_of_first_line);
+    fillInitStateFromVector(vec);
+  }
 
+  CrateStackCollection(CrateStackParser &parser) {
+    setupEmptyInitStateFromParser(parser);
+    fillInitStateFromParser(parser);
+  }
+
+  void fillInitStateFromParser(CrateStackParser &parser) {
+    auto vec = parser.getPreprocessedInputStateVector();
+    fillInitStateFromVector(vec);
+  }
+
+  void fillInitStateFromVector(stringVector vec) {
     size_t vecsize{vec.size()};
     for (int iline{(int)vecsize - 1}; iline >= 0; --iline) {
       const auto line{vec[iline]};
@@ -29,50 +44,11 @@ public:
     }
   }
 
-  // CrateStackCollection(CrateStackParser &parser) {
-  //   setupEmptyInitStateFromParser(parser);
-  //   fillInitStateFromParser(parser);
-  // }
-
-  // void setupEmptyInitStateFromParser(CrateStackParser &parser) {
-  //   auto vec = parser.getPreprocessedInputStateVector();
-  //   // size_t vecsize{vec.size()};
-  //   auto size_of_first_line{vec[0].size()};
-  //   addNEmptyCrateStacks(size_of_first_line);
-  // }
-
-  // void fillInitStateFromParser(CrateStackParser &parser) {
-  //   auto vec = parser.getPreprocessedInputStateVector();
-  //   size_t vecsize{vec.size()};
-  //   size_t vecsize{vec.size()};
-  //   for (int iline{vecsize - 1}; iline >= 0; --iline) {
-  //     const auto line{vec[iline]};
-  //     for (int ichar{0}; ichar < line.size(); ++ichar) {
-  //       if (line[ichar] != m_empty_crate_char) {
-  //         char val_to_push{line[ichar]};
-  //         pushToStack(val_to_push, ichar);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // CrateStackCollection(stringVector vec) {
-  //   std::cout << "++++++++++++++ first line size:  " << vec[0].size()
-  //             << std::endl;
-  //   addNEmptyCrateStacks(vec[0].size());
-  //   std::cout << "++++++++++++++ num of stacks:  " << numOfStacks()
-  //             << std::endl;
-  //   size_t vecsize{vec.size()};
-  //   for (int iline{vecsize - 1}; iline >= 0; --iline) {
-  //     const auto line{vec[iline]};
-  //     for (int ichar{0}; ichar < line.size(); ++ichar) {
-  //       if (line[ichar] != m_empty_crate_char) {
-  //         char val_to_push{line[ichar]};
-  //         pushToStack(val_to_push, ichar);
-  //       }
-  //     }
-  //   }
-  // }
+  void setupEmptyInitStateFromParser(CrateStackParser &parser) {
+    auto vec = parser.getPreprocessedInputStateVector();
+    auto size_of_first_line{vec[0].size()};
+    addNEmptyCrateStacks(size_of_first_line);
+  }
 
   void addNEmptyCrateStacks(int n) {
     for (int i{0}; i < n; ++i) {
@@ -105,6 +81,7 @@ public:
     Crate next_crate = Crate(val);
     m_stacks[stack_idx]->push(next_crate);
   }
+
   void moveWholeSubstack(const MoveDirective &move) {
     moveWholeSubstack(move.origin, move.target, move.amount);
   }

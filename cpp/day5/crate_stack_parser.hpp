@@ -1,9 +1,7 @@
 #pragma once
 
-#include "crate_stack_collection.hpp"
 #include "helper_classes.hpp"
 #include "vector_utils.hpp"
-#include <regex>
 #include <string>
 #include <vector>
 
@@ -131,22 +129,22 @@ private:
 
   void replaceSubstring(std::string &str, const std::string &str_to_be_replaced,
                         const std::string &replacement_str) {
-    str = std::regex_replace(str, std::regex(str_to_be_replaced),
-                             replacement_str);
+    auto str_to_be_replaced_len{str_to_be_replaced.size()};
+    auto str_to_be_replaced_pos{str.find(str_to_be_replaced)};
+    while (str_to_be_replaced_pos != std::string::npos) {
+      str.replace(str_to_be_replaced_pos, str_to_be_replaced_len,
+                  replacement_str);
+      str_to_be_replaced_pos = str.find(str_to_be_replaced);
+    }
   }
 
-  /// @brief replace all occurences of "####" in str with "#[_]"
-  /// @param str string to process
+  /// @brief replace all occurences of "####" in str with "#[_]", to align empty
+  /// spaces with filled ones
+  /// @param str string to be processed
   void replaceQuadrupleSharp(std::string &str) {
-    std::string string_to_be_replaced{"####"};
+    std::string str_to_be_replaced{"####"};
     std::string replacement_str{"#[_]"};
-    auto string_to_be_replaced_len{string_to_be_replaced.size()};
-    auto quadruple_hashtag_pos{str.find(string_to_be_replaced)};
-    while (quadruple_hashtag_pos != std::string::npos) {
-      str.replace(quadruple_hashtag_pos, string_to_be_replaced_len,
-                  replacement_str);
-      quadruple_hashtag_pos = str.find(string_to_be_replaced);
-    }
+    replaceSubstring(str, str_to_be_replaced, replacement_str);
   }
 
   std::string m_filepath_to_parse{};

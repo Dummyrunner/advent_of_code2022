@@ -76,6 +76,7 @@ public:
   }
 
   std::vector<MoveDirective> getMoveDirectivesVector() {
+    clearMoveDirectiveVector();
     fillMoveDirectiveVector(m_raw_move_vector);
     return m_move_directives;
   }
@@ -88,6 +89,8 @@ private:
       m_move_directives.push_back(next_move_directive);
     }
   }
+
+  void clearMoveDirectiveVector() { m_move_directives.clear(); }
 
   int charAsInt(const char c) {
     int res = c - '0';

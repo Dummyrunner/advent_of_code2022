@@ -59,12 +59,8 @@ int main() {
   std::string final_tops_A{};
   std::string final_tops_B{};
   SolverDay5 solver = SolverDay5(path);
-  std::cout << "------------------------------\n";
   auto solverSolA{solver.solveA()};
   auto solverSolB{solver.solveB()};
-  std::cout << solverSolA << std::endl;
-  std::cout << solverSolB << std::endl;
-  std::cout << "------------------------------\n";
 
   CrateStackParser parser = CrateStackParser(path);
 

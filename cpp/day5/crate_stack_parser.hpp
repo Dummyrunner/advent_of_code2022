@@ -11,7 +11,9 @@ class CrateStackParser {
 public:
   CrateStackParser(const std::string &path,
                    const std::string &empty_crate_char = "_")
-      : m_filepath_to_parse{path}, m_empty_crate_char{empty_crate_char} {}
+      : m_filepath_to_parse{path}, m_empty_crate_char{empty_crate_char} {
+    // prepareInitStateInput();
+  }
 
   void prepareInitStateInput() {
     std::vector<std::string> all_lines =

@@ -46,7 +46,11 @@ public:
 
   void setupEmptyInitStateFromParser(CrateStackParser &parser) {
     auto vec = parser.getPreprocessedInputStateVector();
-    auto size_of_first_line{vec[0].size()};
+    if (!vec.size()) {
+      std::cout << "VEC IS EMPTY" << std::endl;
+    }
+    auto vec_first_line{vec[0]};
+    auto size_of_first_line{vec_first_line.size()};
     addNEmptyCrateStacks(size_of_first_line);
   }
 

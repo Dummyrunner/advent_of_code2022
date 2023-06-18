@@ -8,7 +8,7 @@
             "name": "C++ adv2022 day5",
             "type": "cppdbg",
             "program": "${workspaceFolder}/build/day5",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/day5",
             "externalConsole": false,
             "request": "launch"
         },

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "helper_classes.hpp"
 #include "vector_utils.hpp"
 #include <string>
@@ -12,27 +11,42 @@ public:
   CrateStackParser(const std::string &path,
                    const std::string &empty_crate_char = "_")
       : m_filepath_to_parse{path}, m_empty_crate_char{empty_crate_char} {
-    // prepareInitStateInput();
+    assignRawInputs();
+    doParsing();
+    // utils::printAllVectorEntries(m_move_directives);
   }
+  CrateStackParser() = delete;
 
-  void prepareInitStateInput() {
-    std::vector<std::string> all_lines =
-        utils::extractFileToLineVector(m_filepath_to_parse);
-    auto two_input_sections = splitStringVectorAtEmptyLine(all_lines);
-    auto init_state_input_lines = two_input_sections[0];
+  void preprocessInitStateInput() {
+    // std::vector<std::string> all_lines =
+    //     utils::extractFileToLineVector(m_filepath_to_parse);
+    // auto two_input_sections = splitStringVectorAtEmptyLine(all_lines);
+    // auto init_state_input_lines = two_input_sections[0];
 
-    std::string enum_line = init_state_input_lines.back();
-    // remove last line enumerating stacks
-    init_state_input_lines.erase(init_state_input_lines.end() - 1);
-
-    for (auto &line : init_state_input_lines) {
+    // std::string enum_line = init_state_input_lines.back();
+    // // remove last line enumerating stacks
+    // init_state_input_lines.erase(init_state_input_lines.end() - 1);
+    // assignRawInputs();
+    auto init_state_vec{m_raw_input_state_vector};
+    for (auto &line : init_state_vec) {
       replaceCharsInString(' ', '#', line);
       replaceQuadrupleSharp(line);
       replaceSubstring(line, "###", "[" + m_empty_crate_char + "]");
       removeCharFromString('#', line);
       removeBracketsFromString(line);
     }
-    m_preprocessed_input_state_vector = init_state_input_lines;
+    // std::cout << "kadsdasdfh\n";
+    // utils::printAllVectorEntries(init_state_vec);
+    m_preprocessed_input_state_vector = init_state_vec;
+  }
+
+  void assignRawInputs() {
+    std::vector<std::string> all_lines =
+        utils::extractFileToLineVector(m_filepath_to_parse);
+    auto two_input_sections = splitStringVectorAtEmptyLine(all_lines);
+    std::cout << "huddldi" << std::endl;
+    m_raw_input_state_vector = two_input_sections[0];
+    m_raw_input_state_vector.erase(m_raw_input_state_vector.end() - 1);
     m_raw_move_vector = two_input_sections[1];
   }
 
@@ -63,6 +77,21 @@ public:
     return res;
   }
 
+  std::vector<MoveDirective> fillMoveDirectivesVector() {
+    clearMoveDirectiveVector();
+    fillMoveDirectiveVector(m_raw_move_vector);
+    return m_move_directives;
+  }
+
+  void doParsing() {
+    fillMoveDirectivesVector();
+    preprocessInitStateInput();
+  }
+  std::vector<MoveDirective> getMoveDirectivesVector() {
+    return m_move_directives;
+  }
+
+private:
   MoveDirective createMoveDirectiveFromInputLine(const std::string &str) {
     auto integer_vec{extractIntegersFromString(str)};
     int amount = integer_vec[0];
@@ -75,13 +104,6 @@ public:
     return res;
   }
 
-  std::vector<MoveDirective> getMoveDirectivesVector() {
-    clearMoveDirectiveVector();
-    fillMoveDirectiveVector(m_raw_move_vector);
-    return m_move_directives;
-  }
-
-private:
   void fillMoveDirectiveVector(stringVector strvec) {
     for (std::vector<std::string>::size_type iline{0}; iline < strvec.size();
          ++iline) {

@@ -49,9 +49,12 @@ public:
     if (!vec.size()) {
       std::cout << "VEC IS EMPTY" << std::endl;
     }
+    std::cout << "huddlduasföljuwsgföwakju  \n";
+    utils::printAllVectorEntries(vec);
     auto vec_first_line{vec[0]};
     auto size_of_first_line{vec_first_line.size()};
     addNEmptyCrateStacks(size_of_first_line);
+    auto s = m_stacks.size();
   }
 
   void addNEmptyCrateStacks(int n) {

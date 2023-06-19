@@ -135,6 +135,15 @@ public:
     return str;
   }
 
+  void removeAllStacks() { m_stacks.clear(); }
+  void removeAllCratesFromStacks() {
+    for (auto &stack : m_stacks) {
+      while (!stack->empty()) {
+        stack->pop();
+      }
+    }
+  }
+
 private:
   void addEmptyCrateStack() {
     auto new_stack = std::make_unique<crateStack>();

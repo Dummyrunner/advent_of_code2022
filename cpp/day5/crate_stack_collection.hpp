@@ -14,13 +14,19 @@ using stringVector = std::vector<std::string>;
 class CrateStackCollection {
 public:
   CrateStackCollection() = default;
+  /// @brief ctor, reads prep. init state vector, creates and fills stacks
+  /// accordingly
+  /// @param vec
+  /// @param empty_crate_char
   CrateStackCollection(stringVector vec, char empty_crate_char = '_')
       : m_empty_crate_char{empty_crate_char} {
     auto size_of_first_line{vec[0].size()};
     addNEmptyCrateStacks(size_of_first_line);
     fillInitStateFromVector(vec);
   }
-
+  /// @brief ctor, takes init state vec from parser, creates and fills stacks
+  /// accordingly
+  /// @param parser
   CrateStackCollection(CrateStackParser &parser) {
     setupEmptyInitStateFromParser(parser);
     fillInitStateFromParser(parser);
@@ -46,19 +52,13 @@ public:
 
   void setupEmptyInitStateFromParser(CrateStackParser &parser) {
     auto vec = parser.getPreprocessedInputStateVector();
-    if (!vec.size()) {
-      std::cout << "VEC IS EMPTY" << std::endl;
-    }
-    std::cout << "huddlduasföljuwsgföwakju  \n";
-    utils::printAllVectorEntries(vec);
     auto vec_first_line{vec[0]};
     auto size_of_first_line{vec_first_line.size()};
     addNEmptyCrateStacks(size_of_first_line);
-    auto s = m_stacks.size();
   }
 
-  void addNEmptyCrateStacks(int n) {
-    for (int i{0}; i < n; ++i) {
+  void addNEmptyCrateStacks(size_t n) {
+    for (size_t i{0}; i < n; ++i) {
       addEmptyCrateStack();
     }
   }
@@ -147,12 +147,12 @@ public:
     }
   }
 
-private:
   void addEmptyCrateStack() {
-    auto new_stack = std::make_unique<crateStack>();
+    std::unique_ptr<crateStack> new_stack = std::make_unique<crateStack>();
     m_stacks.push_back(std::move(new_stack));
   }
 
+private:
   void moveSingleCrate(const int &origin, const int &target) {
     if (!inStackIdxRange(origin) || !inStackIdxRange(target)) {
       throwAtStackIndexOutOfRange();
@@ -170,7 +170,7 @@ private:
   }
 
   void throwAtStackIndexOutOfRange(int idx) {
-    throw std::out_of_range("Index out of range " + std::to_string(idx));
+    throw std::out_of_range("Index out of range: " + std::to_string(idx));
   }
 
   std::vector<crateStackPtr> m_stacks{};
